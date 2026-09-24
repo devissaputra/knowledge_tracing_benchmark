@@ -1,12 +1,12 @@
 # Knowledge Tracing Benchmark
 
-> Bayesian Knowledge Tracing baseline with a benchmark scaffold for future recurrent and attention based models.
+> Bayesian Knowledge Tracing baseline with a benchmark scaffold for future recurrent and attention-based models.
 
-[![CI](https://github.com/devissaputra/knowledge-tracing-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/knowledge-tracing-benchmark/actions/workflows/ci.yml)
+[![CI](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/ci.yml)
 
 ![Knowledge Tracing Benchmark workflow](assets/architecture.svg)
 
-**Area:** Learner Modeling & Self-Regulation    
+**Area:** AI in Education (AIEd) · Learner Modeling & Knowledge Tracing    
 **Status:** working research prototype  
 **Author:** Devis Wawan Saputra
 
@@ -40,7 +40,7 @@ This snapshot shows the bundled synthetic example for Knowledge Tracing Benchmar
 - binary response traces
 - explicit BKT parameters
 - mastery probability updates
-- benchmark ready interface
+- shared mastery-trace interface
 
 ## Data
 
@@ -51,7 +51,7 @@ Toy skill response sequences are included. Real dataset adapters are not bundled
 ## Run the demo
 
 ```bash
-git clone https://github.com/devissaputra/knowledge-tracing-benchmark.git
+git clone https://github.com/devissaputra/knowledge_tracing_benchmark.git
 cd knowledge-tracing-benchmark
 python scripts/run_demo.py
 python -m unittest discover -s tests -v
@@ -61,7 +61,7 @@ The demo passes four binary responses through BKT and prints the resulting maste
 
 ## What to evaluate next
 
-The next build should add one recurrent and one attention based implementation behind the same learner disjoint evaluation interface. Comparisons should include calibration and cold start behavior, not only predictive ranking.
+The next build should add one recurrent and one attention based implementation behind the same learner-disjoint evaluation interface. Comparisons should include calibration and cold start behavior, not only predictive ranking.
 
 ## Evaluation view
 
