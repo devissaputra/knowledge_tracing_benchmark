@@ -5,10 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "knowledge-tracing-benchmark"
 version = "0.1.0"
-description = "Bayesian Knowledge Tracing baseline with a benchmark scaffold for future recurrent and attention based models."
+description = "Bayesian Knowledge Tracing baseline with a benchmark scaffold for future recurrent and attention-based models."
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [{name = "Devis Wawan Saputra"}]
+readme = "README.md"
+keywords = ["ai-in-education", "aied", "knowledge-tracing", "learner-modeling", "learning-analytics", "bayesian-knowledge-tracing"]
+
+[project.urls]
+Repository = "https://github.com/devissaputra/knowledge_tracing_benchmark"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
