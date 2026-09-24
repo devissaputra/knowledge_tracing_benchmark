@@ -16,7 +16,9 @@ Knowledge tracing comparisons can be misleading when data splits, cold starts, a
 
 **Who may find it useful:** AIED researchers studying learner knowledge over time and anyone comparing knowledge-tracing models fairly.
 
-## Research questions
+## Planned benchmark questions
+
+The current repository implements BKT only. These questions define the comparison the benchmark is intended to support once the additional models and real-data adapters are added.
 
 1. How do BKT, DKT, and attention-based approaches compare under learner-aware splits?
 2. How sensitive are results to sequence truncation and cold-start learners?
