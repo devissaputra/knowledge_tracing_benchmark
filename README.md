@@ -54,7 +54,7 @@ Toy skill response sequences are included. Real dataset adapters are not bundled
 
 ```bash
 git clone https://github.com/devissaputra/knowledge_tracing_benchmark.git
-cd knowledge-tracing-benchmark
+cd knowledge_tracing_benchmark
 python scripts/run_demo.py
 python -m unittest discover -s tests -v
 ```
