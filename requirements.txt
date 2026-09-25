@@ -1,2 +1,7 @@
-datasets>=3.0,<5
+numpy>=1.26,<3
+pandas>=2.2,<3
+pyarrow>=15,<24
+matplotlib>=3.8,<4
 scikit-learn>=1.5,<2
+torch>=2.2,<3
+huggingface-hub>=0.25,<2
