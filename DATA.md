@@ -46,6 +46,12 @@ Learners, rather than individual interactions, are split into 70% train, 15% val
 
 All stateful predictions are emitted before the current response is observed.
 
+## Transformation boundary
+
+The pinned mirror is already a sequence-formatted transformation. It exposes learner IDs, skill sequences, skill names, binary grades, attempt counts, and answer types, but it does not expose the full original row-level identifiers needed to reconstruct every raw interaction.
+
+The repository can therefore verify sequence alignment, binary outcomes, learner uniqueness, split integrity, and the exact transformed bytes it used. It does **not** claim to independently reproduce or audit every preprocessing and raw-row deduplication decision that occurred before this mirror was serialized. That upstream transformation is a validity limitation and should be reported in any publication.
+
 ## Scientific interpretation
 
 The mirror is not treated as an independent dataset or as authoritative documentation of ASSISTments. Any publication using this bundle should cite the original ASSISTments data source and describe the mirror revision used for reproducibility.
