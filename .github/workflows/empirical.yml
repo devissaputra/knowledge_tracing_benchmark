@@ -2,7 +2,7 @@ name: Empirical Study
 on:
   push:
     branches: [main]
-    paths: ["src/run_experiment.py", "src/knowledge_tracing_benchmark/core.py", "requirements.txt", ".github/workflows/empirical.yml"]
+    paths: ["src/run_experiment.py", "src/knowledge_tracing_benchmark/core.py", "requirements.txt", "requirements-repro.txt", ".github/workflows/empirical.yml"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -24,7 +24,7 @@ jobs:
           cache: pip
       - run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements-repro.txt
       - run: PYTHONPATH=src python src/run_experiment.py
       - run: |
           git config user.name "github-actions[bot]"
