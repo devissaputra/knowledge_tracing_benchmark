@@ -1,7 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+<title id="title">Knowledge Tracing Benchmark data and evidence flow</title>
+<desc id="desc">Pinned ASSISTments sequences are validated, split by learner, modeled without current-response leakage, and evaluated on the final held-out learner partition.</desc>
 <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#52656D"/></marker></defs>
 <rect width="100%" height="100%" fill="#FAFBFA"/>
-<text x="60" y="64" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#1B2430">Knowledge Tracing Benchmark · data and reasoning flow</text>
-<text x="60" y="98" font-family="Arial, sans-serif" font-size="17" fill="#5B6660">A compact view of the information path used by the prototype.</text>
-<rect x="95" y="145" width="200" height="110" rx="18" fill="#E8F1F3" stroke="#87949A" stroke-width="2"/><text x="195" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1B2430">01</text><text x="195" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#26343B">Interaction log</text><line x1="300" y1="200" x2="350" y2="200" stroke="#52656D" stroke-width="3" marker-end="url(#arrow)"/><rect x="365" y="145" width="200" height="110" rx="18" fill="#EEF3E8" stroke="#87949A" stroke-width="2"/><text x="465" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1B2430">02</text><text x="465" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#26343B">Response sequence</text><line x1="570" y1="200" x2="620" y2="200" stroke="#52656D" stroke-width="3" marker-end="url(#arrow)"/><rect x="635" y="145" width="200" height="110" rx="18" fill="#F5EDE4" stroke="#87949A" stroke-width="2"/><text x="735" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1B2430">03</text><text x="735" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#26343B">BKT baseline</text><line x1="840" y1="200" x2="890" y2="200" stroke="#52656D" stroke-width="3" marker-end="url(#arrow)"/><rect x="905" y="145" width="200" height="110" rx="18" fill="#ECE8F5" stroke="#87949A" stroke-width="2"/><text x="1005" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1B2430">04</text><text x="1005" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#26343B">Mastery trace</text>
+<text x="60" y="62" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#1B2430">Knowledge Tracing Benchmark · data and evidence flow</text>
+<text x="60" y="96" font-family="Arial, sans-serif" font-size="16" fill="#5B6660">Every arrow corresponds to an executable boundary in the empirical runner.</text>
+
+<rect x="52" y="145" width="205" height="120" rx="18" fill="#E8F1F3" stroke="#87949A" stroke-width="2"/>
+<text x="154" y="178" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#1B2430">Pinned source</text>
+<text x="154" y="204" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">ASSISTments 2009 mirror</text>
+<text x="154" y="226" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">revision + parquet SHA-256</text>
+<text x="154" y="248" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">aligned binary sequences</text>
+
+<line x1="267" y1="205" x2="312" y2="205" stroke="#52656D" stroke-width="3" marker-end="url(#arrow)"/>
+
+<rect x="322" y="145" width="205" height="120" rx="18" fill="#EEF3E8" stroke="#87949A" stroke-width="2"/>
+<text x="424" y="178" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#1B2430">Leakage guard</text>
+<text x="424" y="204" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">unique user_id per row</text>
+<text x="424" y="226" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">70/15/15 learner split</text>
+<text x="424" y="248" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">train · validation · test</text>
+
+<line x1="537" y1="205" x2="582" y2="205" stroke="#52656D" stroke-width="3" marker-end="url(#arrow)"/>
+
+<rect x="592" y="132" width="245" height="146" rx="18" fill="#F5EDE4" stroke="#87949A" stroke-width="2"/>
+<text x="714" y="166" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#1B2430">Model comparison</text>
+<text x="714" y="191" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">priors · BKT · PFA-style</text>
+<text x="714" y="213" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">compact GRU sequence model</text>
+<text x="714" y="235" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">predict before observing response</text>
+<text x="714" y="257" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">validation-only selection</text>
+
+<line x1="847" y1="205" x2="892" y2="205" stroke="#52656D" stroke-width="3" marker-end="url(#arrow)"/>
+
+<rect x="902" y="132" width="246" height="146" rx="18" fill="#ECE8F5" stroke="#87949A" stroke-width="2"/>
+<text x="1025" y="166" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#1B2430">Final test evidence</text>
+<text x="1025" y="191" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">probability + discrimination</text>
+<text x="1025" y="213" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">calibration + learner slices</text>
+<text x="1025" y="235" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">learner-block uncertainty</text>
+<text x="1025" y="257" text-anchor="middle" font-family="Arial" font-size="13" fill="#26343B">seed stability + error analysis</text>
+
+<text x="60" y="340" font-family="Arial, sans-serif" font-size="14" fill="#5B6660">Machine-readable authority: results/metrics.json · Generated summary: results/summary.md · Measured figure: results/figures/calibration.png</text>
 </svg>
