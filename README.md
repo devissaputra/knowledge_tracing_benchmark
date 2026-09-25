@@ -1,97 +1,67 @@
-# Knowledge Tracing Benchmark — Research Bundle
+# Knowledge Tracing Benchmark on ASSISTments 2009
 
 [![CI](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/ci.yml)
+[![Empirical Study](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/empirical.yml/badge.svg)](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/empirical.yml)
 
 **Research Bundle · AI in Education · learner modeling and knowledge tracing**
 
-This repository is now an empirical knowledge-tracing bundle built around **real ASSISTments 2009 learner sequences**. The previous toy sequences remain only as unit-test/smoke-test fixtures; they are not research evidence.
+This repository is a learner-disjoint empirical benchmark on real ASSISTments 2009 sequences. It compares non-stateful priors, probabilistic knowledge tracing, performance-factor features, and a compact recurrent knowledge tracer rather than presenting fixed BKT as the whole benchmark.
 
-## Empirical question
+## Research questions
 
-> On learner-disjoint ASSISTments 2009 holdout data, does a transparent fixed-parameter Bayesian Knowledge Tracing (BKT) baseline improve next-response probability quality over global-rate and skill-prior baselines?
+1. Do stateful learner models improve held-out next-response probability quality over global and skill priors?
+2. Does validation-tuned BKT improve over a fixed parameterization?
+3. Does a PFA-style logistic model using prior learner-skill successes and failures improve probability quality?
+4. Does a compact GRU knowledge tracer add useful sequence information beyond transparent baselines?
+5. Are conclusions different for first-seen skills versus repeated skill encounters?
+6. Are Brier-score differences robust when uncertainty is resampled at the learner rather than interaction level?
 
-A second analysis separates **cold-start skill encounters** from later encounters to expose where a stateful learner model has evidence to update.
+## Real dataset and provenance
 
-## Real dataset
+The executable adapter uses the public Atomi/ASSISTments2009 sequence mirror pinned to revision c72a664a9693547fb206652ed2ce18e62d320c7d. The mirror currently contains 4,148 learner rows with aligned sequence fields including user_id, skill_ids and grades.
 
-Default research source: `Atomi/ASSISTments2009`, a sequence-formatted public mirror of ASSISTments 2009.
+The mirror is a retrieval representation, not the scientific authority for the original ASSISTments collection. The repository records the exact mirror revision and SHA-256 of the downloaded parquet file and cites the original ASSISTments lineage separately.
 
-The dataset contains one row per learner with aligned sequences including:
+## Learner-disjoint protocol
 
-- `user_id`
-- `skill_ids`
-- `skill_names`
-- `grades` (binary correctness)
-- `attempt_counts`
-- `answer_types`
+- 70% learners: train
+- 15% learners: validation
+- 15% learners: final test
+- fixed split seed: 42
+- no learner crosses partitions
+- all next-response probabilities are emitted before observing the current response
 
-The Hugging Face viewer exposes about 4.15k learner rows. The original data lineage is ASSISTments. See [docs/dataset_card.md](docs/dataset_card.md) for provenance and the distinction between the original source and the convenience mirror.
+## Models
 
-## Frozen protocol
+1. global training correctness rate
+2. training skill prior with global fallback
+3. fixed-parameter BKT
+4. validation-tuned BKT over a frozen parameter grid
+5. PFA-style logistic regression using skill identity and prior learner-skill success/failure counts
+6. compact GRU knowledge tracer with train-skill vocabulary and first-interaction/unseen-skill prior fallback
 
-1. Load the real learner-sequence dataset.
-2. Validate that `skill_ids` and `grades` are aligned.
-3. Split **learners**, not interactions: 70% train, 15% validation, 15% test, seed 42.
-4. Estimate two non-stateful baselines from train learners only:
-   - global correctness rate;
-   - per-skill correctness prior with global fallback.
-5. Evaluate fixed-parameter BKT on each test learner independently.
-6. For every test interaction, predict correctness **before** observing that response.
-7. Report ROC-AUC, Brier score and log loss.
-8. Report the same metrics for first-seen skill interactions and repeated skill interactions when estimable.
-9. Record dataset size, split counts and BKT parameters.
+The GRU is a compact recurrent benchmark, not a claim of reproducing every canonical DKT implementation.
 
-No learner in the test set contributes to training baselines.
+## Evaluation
 
-## Implemented models
+The final learner-disjoint test set reports ROC-AUC, average precision, Brier score, log loss and ECE-10. Metrics are also sliced into first-seen and repeated-skill interactions. The primary uncertainty analysis resamples test learners as blocks and reports Brier-score differences against the skill-prior baseline.
 
-### Global-rate baseline
-One probability estimated from training interactions.
-
-### Skill-prior baseline
-Training-only correctness rate per skill, with global fallback for unseen test skills.
-
-### Bayesian Knowledge Tracing
-Transparent BKT with explicit:
-- initial mastery;
-- learning probability;
-- guess probability;
-- slip probability.
-
-The current research bundle deliberately does **not** claim DKT or attention models are implemented. Those are future benchmark extensions.
+The bundle also identifies high-Brier skills with at least 100 test interactions as an error-analysis diagnostic.
 
 ## Run
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python scripts/run_research.py
-```
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    PYTHONPATH=src pytest -q
+    PYTHONPATH=src python src/run_experiment.py
 
-Offline tests and the small smoke demo:
+The legacy command python scripts/run_research.py routes to the same current protocol.
 
-```bash
-python -m unittest discover -s tests -v
-python scripts/run_demo.py
-```
+## Interpretation boundary
 
-## Research Bundle contents
+Knowledge-tracing probabilities are model states and predictive summaries, not direct measurements of knowledge. Better held-out prediction does not establish better teaching, justify ability labels, or validate automated educational decisions. Skill tags, item difficulty, opportunity order and missing context can all change the interpretation.
 
-- real learner data;
-- learner-disjoint evaluation;
-- explicit next-response prediction timing;
-- transparent baselines;
-- cold-start analysis;
-- dataset card;
-- research protocol;
-- ethics and risks;
-- machine-readable results;
-- CI and tests;
-- paper-ready research brief.
+## Professor review path
 
-See [RESEARCH_BUNDLE.md](RESEARCH_BUNDLE.md).
-
-## Responsible interpretation
-
-Knowledge-tracing probabilities are model states, not direct measurements of human knowledge. Skill tags can be incomplete, multi-skill identifiers are treated as observed composite keys in this baseline, and correctness can reflect guessing, slips, item difficulty and context. The system must not be used to label learners as permanently capable or incapable.
+README.md → DATA.md → src/run_experiment.py → src/knowledge_tracing_benchmark/core.py → results/summary.md → results/metrics.json → ETHICS.md → paper/paper.md.
