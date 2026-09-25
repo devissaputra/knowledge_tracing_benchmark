@@ -1,33 +1,19 @@
-# Analytic system card
-
-## System
-
-Knowledge Tracing Benchmark
+# Model Card — BKT Research Baseline
 
 ## Purpose
+Transparent next-response probability baseline for the ASSISTments 2009 research bundle.
 
-Bayesian Knowledge Tracing baseline with a benchmark scaffold for future recurrent and attention based models.
+## Model
+Bayesian Knowledge Tracing with explicit fixed parameters. State is maintained separately for each observed learner-skill key and reset for each learner.
 
-## Current maturity
+## Comparator models
+Training-only global correctness rate and training-only per-skill correctness prior.
 
-Working research prototype. The bundled example checks the software path with synthetic inputs. It does not establish validity for real learners, instructors, courses, or workplaces.
+## Intended use
+Research benchmarking and methodological inspection.
 
-## Inputs
+## Not intended for
+High-stakes learner placement, permanent ability labeling, disciplinary action, or automated intervention without educator review.
 
-See `../data/README.md` for the current synthetic schema and the documentation expected before real data are connected.
-
-## Outputs
-
-The current code produces a mastery probability after each observed binary response. These outputs are research signals and should be interpreted with the educational context that produced them.
-
-## Evidence needed before real use
-
-Use learner disjoint splits for generalization to new learners and temporal evaluation for future responses. Compare BKT with stronger models only after all methods share the same data preprocessing and split logic.
-
-## Main limitation
-
-BKT makes strong assumptions about skill independence, stationarity, and the meaning of correct responses. The present repository is a baseline and benchmark scaffold, not a completed comparison of BKT, DKT, and attention models.
-
-## Human oversight
-
-A person must review any output before it can affect a learner, instructor, applicant, or employee.
+## Important limitations
+Fixed parameters are not fitted to the dataset; item difficulty and multi-skill structure are simplified; mastery is latent and not directly observed.

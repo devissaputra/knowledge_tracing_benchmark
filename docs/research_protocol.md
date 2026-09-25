@@ -1,35 +1,27 @@
-# Research protocol
+# Research Protocol
 
-## Project
+## Question
+Does transparent fixed-parameter BKT improve held-out next-response probability quality over non-stateful training priors on real ASSISTments 2009 learner sequences?
 
-Knowledge Tracing Benchmark
+## Split
+Learners are shuffled with seed 42 and split 70/15/15. The validation partition is reserved for future parameter/model selection; the current fixed-parameter BKT does not tune on it.
 
-## Questions
+## Prediction timing
+For a learner-skill state, the model first emits `P(correct)`, then observes the binary response, then updates mastery. This prevents current-response leakage.
 
-1. How do BKT, DKT, and attention-based approaches compare under learner-aware splits?
-2. How sensitive are results to sequence truncation and cold-start learners?
-3. Are gains preserved after calibration and subgroup analysis?
+## Baselines
+1. global training correctness;
+2. per-skill training correctness with global fallback;
+3. fixed-parameter BKT.
 
-## Baseline methods
+## Primary metrics
+- ROC-AUC, when both classes are present;
+- Brier score;
+- log loss.
 
-- Bayesian Knowledge Tracing
-- binary response traces
-- explicit BKT parameters
-- mastery probability updates
-- benchmark ready interface
-
-## Evidence to collect
-
-Start from the current transparent baseline and record every transformation needed to produce a mastery probability after each observed binary response. Keep a clear boundary between synthetic demonstration data and any future empirical dataset.
-
-## Validation
-
-Use learner disjoint splits for generalization to new learners and temporal evaluation for future responses. Compare BKT with stronger models only after all methods share the same data preprocessing and split logic.
-
-## What counts as a useful result
-
-The next build should add one recurrent and one attention based implementation behind the same learner disjoint evaluation interface. Comparisons should include calibration and cold start behavior, not only predictive ranking.
+## Secondary slices
+- cold-start skill interactions: first time a learner encounters the observed skill key;
+- repeated-skill interactions.
 
 ## Threats to validity
-
-Skill tagging errors, short sequences, changing item difficulty, multiple latent skills, and leakage across learner histories can distort knowledge tracing results.
+Fixed BKT parameters may be misspecified. Skill tags may not define independent knowledge components. Item difficulty is omitted. Learner histories are observational traces from one platform/ecosystem. Predictive metrics do not measure learning benefit.

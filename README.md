@@ -1,119 +1,97 @@
-# Knowledge Tracing Benchmark
-
-> Bayesian Knowledge Tracing baseline with a benchmark scaffold for future recurrent and attention-based models.
+# Knowledge Tracing Benchmark — Research Bundle
 
 [![CI](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/workflows/ci.yml)
 
-![Knowledge Tracing Benchmark workflow](assets/architecture.svg)
+**Research Bundle · AI in Education · learner modeling and knowledge tracing**
 
-**Area:** AI in Education (AIEd) · Learner Modeling & Knowledge Tracing    
-**Status:** working research prototype  
-**Author:** Devis Wawan Saputra
+This repository is now an empirical knowledge-tracing bundle built around **real ASSISTments 2009 learner sequences**. The previous toy sequences remain only as unit-test/smoke-test fixtures; they are not research evidence.
 
-## What this project is for
+## Empirical question
 
-Knowledge tracing comparisons can be misleading when data splits, cold starts, and calibration are handled differently. This repository provides a transparent Bayesian Knowledge Tracing baseline and a shared evaluation scaffold that future recurrent or attention based implementations can use.
+> On learner-disjoint ASSISTments 2009 holdout data, does a transparent fixed-parameter Bayesian Knowledge Tracing (BKT) baseline improve next-response probability quality over global-rate and skill-prior baselines?
 
-**Who may find it useful:** AIED researchers studying learner knowledge over time and anyone comparing knowledge-tracing models fairly.
+A second analysis separates **cold-start skill encounters** from later encounters to expose where a stateful learner model has evidence to update.
 
-## Planned benchmark questions
+## Real dataset
 
-The current repository implements BKT only. These questions define the comparison the benchmark is intended to support once the additional models and real-data adapters are added.
+Default research source: `Atomi/ASSISTments2009`, a sequence-formatted public mirror of ASSISTments 2009.
 
-1. How do BKT, DKT, and attention-based approaches compare under learner-aware splits?
-2. How sensitive are results to sequence truncation and cold-start learners?
-3. Are gains preserved after calibration and subgroup analysis?
+The dataset contains one row per learner with aligned sequences including:
 
-## How it works
+- `user_id`
+- `skill_ids`
+- `skill_names`
+- `grades` (binary correctness)
+- `attempt_counts`
+- `answer_types`
 
-The code currently implements Bayesian Knowledge Tracing only. It updates mastery after each binary response using explicit initial mastery, learning, guess, and slip parameters. Recurrent and attention models belong to the planned benchmark, not to the present implementation.
+The Hugging Face viewer exposes about 4.15k learner rows. The original data lineage is ASSISTments. See [docs/dataset_card.md](docs/dataset_card.md) for provenance and the distinction between the original source and the convenience mirror.
 
-![Knowledge Tracing Benchmark data and reasoning flow](assets/data_flow.svg)
+## Frozen protocol
 
-The current data path is response sequence to BKT parameter update to mastery trace. Future model adapters can be evaluated against that same sequence interface once they are actually implemented.
+1. Load the real learner-sequence dataset.
+2. Validate that `skill_ids` and `grades` are aligned.
+3. Split **learners**, not interactions: 70% train, 15% validation, 15% test, seed 42.
+4. Estimate two non-stateful baselines from train learners only:
+   - global correctness rate;
+   - per-skill correctness prior with global fallback.
+5. Evaluate fixed-parameter BKT on each test learner independently.
+6. For every test interaction, predict correctness **before** observing that response.
+7. Report ROC-AUC, Brier score and log loss.
+8. Report the same metrics for first-seen skill interactions and repeated skill interactions when estimable.
+9. Record dataset size, split counts and BKT parameters.
 
-![Synthetic demo snapshot for Knowledge Tracing Benchmark](assets/demo_snapshot.svg)
+No learner in the test set contributes to training baselines.
 
-This snapshot shows the bundled synthetic example for Knowledge Tracing Benchmark. It checks the software path; it is not an empirical performance result.
+## Implemented models
 
-## Methods in the current baseline
+### Global-rate baseline
+One probability estimated from training interactions.
 
-- Bayesian Knowledge Tracing
-- binary response traces
-- explicit BKT parameters
-- mastery probability updates
-- shared mastery-trace interface
+### Skill-prior baseline
+Training-only correctness rate per skill, with global fallback for unseen test skills.
 
-## Data
+### Bayesian Knowledge Tracing
+Transparent BKT with explicit:
+- initial mastery;
+- learning probability;
+- guess probability;
+- slip probability.
 
-Toy skill response sequences are included. Real dataset adapters are not bundled; users can connect sources such as ASSISTments or EdNet after obtaining them from the original providers and documenting their license and usage terms.
+The current research bundle deliberately does **not** claim DKT or attention models are implemented. Those are future benchmark extensions.
 
-`data/README.md` documents the sample schema and the conditions that should be recorded before any real dataset is connected. Restricted or identifiable learner data should stay outside the repository.
-
-## Run the demo
+## Run
 
 ```bash
-git clone https://github.com/devissaputra/knowledge_tracing_benchmark.git
-cd knowledge_tracing_benchmark
-python scripts/run_demo.py
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python scripts/run_research.py
+```
+
+Offline tests and the small smoke demo:
+
+```bash
 python -m unittest discover -s tests -v
+python scripts/run_demo.py
 ```
 
-The demo passes four binary responses through BKT and prints the resulting mastery trajectory. Every probability comes directly from the visible parameter values.
+## Research Bundle contents
 
-## What to evaluate next
+- real learner data;
+- learner-disjoint evaluation;
+- explicit next-response prediction timing;
+- transparent baselines;
+- cold-start analysis;
+- dataset card;
+- research protocol;
+- ethics and risks;
+- machine-readable results;
+- CI and tests;
+- paper-ready research brief.
 
-The next build should add one recurrent and one attention based implementation behind the same learner-disjoint evaluation interface. Comparisons should include calibration and cold start behavior, not only predictive ranking.
+See [RESEARCH_BUNDLE.md](RESEARCH_BUNDLE.md).
 
-## Evaluation view
+## Responsible interpretation
 
-![Knowledge Tracing Benchmark evaluation dashboard](assets/evaluation_dashboard.svg)
-
-The Knowledge Tracing Benchmark dashboard is an evaluation checklist rather than a result chart. The bars are illustrative only; the labels show the evidence a real study would need to collect.
-
-## Limits and responsible use
-
-BKT makes strong assumptions about skill independence, stationarity, and the meaning of correct responses. The present repository is a baseline and benchmark scaffold, not a completed comparison of BKT, DKT, and attention models. See `docs/ethics_and_risks.md` for the broader risk review.
-
-## Repository map
-
-```text
-.
-├── .github/workflows/ci.yml
-├── assets/
-│   ├── architecture.svg
-│   ├── data_flow.svg
-│   ├── demo_snapshot.svg
-│   └── evaluation_dashboard.svg
-├── data/
-│   ├── README.md
-│   └── sample.csv
-├── docs/
-│   ├── ethics_and_risks.md
-│   ├── related_work.md
-│   └── research_protocol.md
-├── reports/model_card.md
-├── scripts/run_demo.py
-├── src/knowledge_tracing_benchmark/core.py
-├── tests/test_core.py
-├── CITATION.cff
-├── LICENSE
-├── pyproject.toml
-└── README.md
-```
-
-## Research path
-
-A credible next version would:
-
-1. add a real learner sequence adapter with strict learner level splits
-2. implement one recurrent model and one attention baseline
-3. compare prediction quality, calibration, compute cost, and cold start behavior
-
-## Related work
-
-`docs/related_work.md` points to open projects that are relevant to this problem area. They are context for comparison and study design; this repository does not present their code as its own.
-
-## Citation and license
-
-`CITATION.cff` contains the software citation. The code and original SVG visuals use the MIT License. Any external dataset keeps its own license and usage conditions.
+Knowledge-tracing probabilities are model states, not direct measurements of human knowledge. Skill tags can be incomplete, multi-skill identifiers are treated as observed composite keys in this baseline, and correctness can reflect guessing, slips, item difficulty and context. The system must not be used to label learners as permanently capable or incapable.

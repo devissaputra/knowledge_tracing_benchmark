@@ -1,16 +1,7 @@
-# Data Documentation
+# Data Policy
 
-## Included data
-`sample.csv` contains only synthetic records created for smoke tests and demonstrations.
+The default research path now uses **real ASSISTments 2009 learner sequences retrieved at run time**. No source learner dataset is committed to this repository.
 
-## Expected use
-Toy skill response sequences are included. Real dataset adapters are not bundled. Users can connect datasets such as ASSISTments or EdNet after obtaining them from the original source and documenting license and usage terms.
+The old `data/sample.csv` synthetic sequence has been removed from the research data directory. Small synthetic sequences exist only inside tests and `scripts/run_demo.py` as software fixtures.
 
-## Minimum schema
-See the header of `sample.csv`. Production adapters should validate types, missing values, timestamp semantics, and learner/session boundaries before analysis.
-
-## Do not commit
-Personally identifiable information, raw student submissions, private LMS exports, proprietary course content, video/audio recordings, or licensed datasets that prohibit redistribution. Keep sensitive material outside Git and reference it through local paths or an approved secure store.
-
-## Dataset card requirement
-For any real experiment, record source, license/consent basis, population, collection period, exclusions, preprocessing, missingness, known biases, and permitted uses.
+See `docs/dataset_card.md` for source, schema, privacy and validity notes.

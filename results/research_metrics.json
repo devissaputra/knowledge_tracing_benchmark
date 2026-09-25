@@ -1,0 +1,6 @@
+{
+  "research_bundle": true,
+  "status": "regenerate_required",
+  "message": "Run scripts/run_research.py to generate empirical metrics from real ASSISTments 2009 learner sequences.",
+  "dataset": "Atomi/ASSISTments2009"
+}
