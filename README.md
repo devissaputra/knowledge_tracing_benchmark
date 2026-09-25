@@ -87,6 +87,7 @@ For the closest reproduction of the successful empirical GitHub Actions environm
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-repro.txt
+pip install pytest==9.1.1
 PYTHONPATH=src python -m pytest -q
 PYTHONPATH=src python src/run_experiment.py
 ```
