@@ -17,7 +17,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install research dependencies
-        run: python -m pip install -r requirements-repro.txt
+        run: |
+          python -m pip install -r requirements-repro.txt
+          python -m pip install pytest==9.1.1
+      - name: Run research-bundle tests
+        run: PYTHONPATH=src python -m pytest -q
       - name: Run real-data research study
         run: python scripts/run_research.py
       - name: Upload research outputs
