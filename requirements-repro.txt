@@ -1,0 +1,9 @@
+# Exact top-level versions from the successful empirical GitHub Actions run on 2026-09-25.
+# System libraries, CPU/GPU wheels, and transitive dependencies remain platform-dependent.
+numpy==2.4.6
+pandas==2.3.3
+pyarrow==23.0.1
+matplotlib==3.11.2
+scikit-learn==1.9.1
+torch==2.14.0
+huggingface-hub==1.33.0
