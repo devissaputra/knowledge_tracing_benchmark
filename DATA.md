@@ -11,6 +11,12 @@ Pinned file: `data/train-00000-of-00001.parquet`
 
 The raw parquet file is not committed to this repository.
 
+For publication, the original ASSISTments data page requests citation of the specific 2009–2010 dataset URL and the ASSISTments system paper:
+
+Feng, M., Heffernan, N. T., & Koedinger, K. R. (2009). *Addressing the assessment challenge in an Intelligent Tutoring System that tutors as it assesses*. User Modeling and User-Adapted Interaction, 19, 243–266.
+
+Because this repository executes against a transformed sequence mirror, a publication should additionally report the mirror repository, pinned revision, file path, and SHA-256 below.
+
 ## Provenance recorded by the runner
 
 Each empirical run records:
