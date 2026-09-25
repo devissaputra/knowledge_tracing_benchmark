@@ -20,6 +20,11 @@ Some skill identifiers are composite strings. This benchmark treats the observed
 
 The evaluation label `first_seen_skill_for_learner` refers only to the first occurrence of that observed skill key within one learner's sequence. It does not mean the skill is globally unseen in training.
 
+## Transformation boundary
+The sequence mirror does not expose all original row-level identifiers. This bundle can verify the exact mirror bytes, learner-row uniqueness, aligned sequences, and evaluation split, but it cannot independently reconstruct every preprocessing or raw-interaction deduplication decision made upstream of the mirror.
+
+That distinction matters for replication: the pinned mirror is the executable research artifact, while the original ASSISTments release remains the scientific source.
+
 ## Privacy
 The executable study uses the public, de-identified sequence representation supplied by the mirror. Do not join these data to external identities or attempt re-identification.
 
