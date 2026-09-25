@@ -1,7 +1,14 @@
 # Data Policy
 
-The default research path now uses **real ASSISTments 2009 learner sequences retrieved at run time**. No source learner dataset is committed to this repository.
+The empirical study uses real ASSISTments 2009 learner sequences retrieved at run time from the pinned public mirror documented in `DATA.md`.
 
-The old `data/sample.csv` synthetic sequence has been removed from the research data directory. Small synthetic sequences exist only inside tests and `scripts/run_demo.py` as software fixtures.
+No source learner dataset is committed to this repository.
 
-See `docs/dataset_card.md` for source, schema, privacy and validity notes.
+The runner records the upstream revision, file path, SHA-256, serialized learner count, unique learner count, and interaction count. It rejects duplicate learner rows and misaligned or non-binary response sequences before model evaluation.
+
+Small synthetic sequences appear only inside automated tests as software fixtures. They are not used to produce research results.
+
+See:
+- `../DATA.md` for scientific source and provenance;
+- `../docs/dataset_card.md` for schema, privacy, and validity boundaries;
+- `../REPRODUCIBILITY.md` for the frozen execution protocol.
