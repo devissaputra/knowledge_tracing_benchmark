@@ -52,6 +52,23 @@ def aligned(row) -> tuple[list[str], list[int]]:
     return skills, grades
 
 
+def validate_unique_learner_rows(rows) -> int:
+    """Require exactly one serialized row per learner before any partitioning."""
+    seen, duplicates = set(), set()
+    for row in rows:
+        if "user_id" not in row:
+            raise ValueError("every learner row must contain user_id")
+        uid = str(row["user_id"])
+        if uid in seen:
+            duplicates.add(uid)
+        seen.add(uid)
+    if duplicates:
+        preview = ", ".join(sorted(duplicates)[:5])
+        suffix = "..." if len(duplicates) > 5 else ""
+        raise ValueError(f"duplicate learner rows detected for user_id: {preview}{suffix}")
+    return len(seen)
+
+
 def load_real_rows(data_path: str | Path | None = None, cache_dir: str | Path = "data/cache"):
     if data_path is None:
         local = hf_hub_download(
@@ -68,6 +85,7 @@ def load_real_rows(data_path: str | Path | None = None, cache_dir: str | Path = 
     payload = Path(local).read_bytes()
     frame = pd.read_parquet(local)
     rows = frame.to_dict(orient="records")
+    unique_learners = validate_unique_learner_rows(rows)
     interactions = 0
     for row in rows:
         _, grades = aligned(row)
@@ -79,6 +97,7 @@ def load_real_rows(data_path: str | Path | None = None, cache_dir: str | Path = 
         "source": source,
         "parquet_sha256": hashlib.sha256(payload).hexdigest(),
         "n_learners": int(len(rows)),
+        "n_unique_learners": int(unique_learners),
         "n_interactions": int(interactions),
     }
     return rows, metadata
@@ -86,6 +105,7 @@ def load_real_rows(data_path: str | Path | None = None, cache_dir: str | Path = 
 
 def split_rows(rows, seed: int = SEED):
     rows = list(rows)
+    validate_unique_learner_rows(rows)
     rng = random.Random(seed)
     rng.shuffle(rows)
     n = len(rows)
@@ -374,12 +394,28 @@ def predict_gru(model, rows, skill_to_idx, global_rate, skill_rate):
 def sliced_metrics(pred: pd.DataFrame):
     out = {"all": metric_bundle(pred["y"], pred["p"])}
     for name, mask in {
-        "cold_start_skill": pred["cold_start"],
+        "first_seen_skill_for_learner": pred["cold_start"],
         "repeated_skill": ~pred["cold_start"],
     }.items():
         if int(mask.sum()):
             out[name] = metric_bundle(pred.loc[mask, "y"], pred.loc[mask, "p"])
     return out
+
+
+def summarize_gru_seed_runs(gru_runs: dict) -> dict:
+    """Summarize full-test GRU metrics across prespecified random seeds."""
+    metric_names = ("roc_auc", "average_precision", "brier", "log_loss", "ece_10")
+    seeds = sorted(gru_runs, key=int)
+    summary = {"n_seeds": len(seeds), "seeds": [int(seed) for seed in seeds], "metrics": {}}
+    for metric in metric_names:
+        values = [gru_runs[seed]["test_all"][metric] for seed in seeds if gru_runs[seed]["test_all"][metric] is not None]
+        if values:
+            summary["metrics"][metric] = {
+                "mean": float(np.mean(values)),
+                "std": float(np.std(values, ddof=1 if len(values) > 1 else 0)),
+                "values": [float(v) for v in values],
+            }
+    return summary
 
 
 def learner_block_bootstrap_brier_delta(reference: pd.DataFrame, candidate: pd.DataFrame, n_boot: int = 2000, seed: int = 20260925):
@@ -450,6 +486,24 @@ def write_summary(results: dict, path: Path):
         m = metrics["all"]
         fmt = lambda x: "NA" if x is None else f"{x:.4f}"
         lines.append(f"| {name} | {fmt(m['roc_auc'])} | {fmt(m['average_precision'])} | {fmt(m['brier'])} | {fmt(m['log_loss'])} | {fmt(m['ece_10'])} |")
+    seed_summary = results.get("gru_seed_summary", {})
+    if seed_summary.get("metrics"):
+        lines += ["", "## GRU repeated-seed stability", ""]
+        lines.append(f"Full-run seeds: {', '.join(str(x) for x in seed_summary['seeds'])}. Mean ± sample SD:")
+        lines.append("")
+        lines.append("| Metric | Mean | SD |")
+        lines.append("|---|---:|---:|")
+        labels = {
+            "roc_auc": "ROC-AUC",
+            "average_precision": "Average precision",
+            "brier": "Brier",
+            "log_loss": "Log loss",
+            "ece_10": "ECE-10",
+        }
+        for key, label in labels.items():
+            if key in seed_summary["metrics"]:
+                item = seed_summary["metrics"][key]
+                lines.append(f"| {label} | {item['mean']:.4f} | {item['std']:.4f} |")
     lines += [
         "", "## Interpretation guardrail", "",
         "Knowledge-tracing probabilities are model states and predictive summaries, not direct measurements of a learner's knowledge. Prediction quality on ASSISTments 2009 does not establish instructional benefit or justify high-stakes learner labeling.", "",
@@ -510,9 +564,14 @@ def run_experiment(results_dir: str | Path = "results", data_path: str | Path | 
             "gru_seeds": list(gru_seeds),
             "gru_known_skill_vocab": int(len(skill_to_idx)),
             "gru_first_interaction_fallback": "training skill prior with global fallback",
+            "slice_definition": {
+                "first_seen_skill_for_learner": "first occurrence of the observed skill key within that learner sequence; not globally unseen in training",
+                "repeated_skill": "later occurrence of the observed skill key within that learner sequence",
+            },
         },
         "test_metrics": test_metrics,
         "gru_repeated_seed_runs": gru_runs,
+        "gru_seed_summary": summarize_gru_seed_runs(gru_runs),
         "learner_block_brier_uncertainty_vs_skill_prior": uncertainty,
         "skill_error_analysis": {name: skill_error_analysis(pred) for name, pred in predictions.items()},
         "environment": {
