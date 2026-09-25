@@ -18,7 +18,8 @@ Each empirical run records:
 - mirror repository and exact Git revision;
 - mirror file path;
 - SHA-256 of the downloaded parquet bytes;
-- number of learner rows;
+- serialized learner-row count;
+- unique `user_id` count;
 - total number of aligned interactions.
 
 The revision pin prevents an unnoticed upstream mirror update from silently changing the benchmark.
@@ -27,9 +28,15 @@ The revision pin prevents an unnoticed upstream mirror update from silently chan
 
 The runner requires aligned `user_id`, `skill_ids`, and binary `grades` sequence fields. It rejects learner rows whose skill and grade sequences have different lengths and rejects response values outside 0/1.
 
+## Learner-row invariant
+
+The benchmark assumes one serialized row per learner. Before any split, the runner checks that `user_id` values are unique and raises an error if duplicate learner rows are present.
+
+This check matters because splitting rows without first enforcing learner uniqueness could place interactions from the same learner into different partitions.
+
 ## Split boundary
 
-Learners, rather than individual interactions, are split into 70% train, 15% validation, and 15% final test with seed 42. A learner therefore cannot appear in more than one partition.
+Learners, rather than individual interactions, are split into 70% train, 15% validation, and 15% final test with seed 42. After the uniqueness check, a learner therefore cannot appear in more than one partition.
 
 All stateful predictions are emitted before the current response is observed.
 
@@ -39,4 +46,4 @@ The mirror is not treated as an independent dataset or as authoritative document
 
 ## Limitations
 
-Skill labels can be incomplete or noisy, opportunity order can encode item selection policies, and predictive mastery states are not direct measurements of knowledge. Results from this historical tutoring dataset do not establish current classroom validity or pedagogical benefit.
+Skill labels can be incomplete, noisy, or composite; opportunity order can encode item-selection policies; and predictive mastery states are not direct measurements of knowledge. Results from this historical tutoring dataset do not establish current classroom validity, fairness, or pedagogical benefit.
