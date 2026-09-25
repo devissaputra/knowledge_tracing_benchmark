@@ -1,24 +1,33 @@
 # Research Bundle Evidence Contract
 
 ## Identity
-**Area:** AI in Education  
-**Study:** transparent knowledge tracing on real learner sequences  
-**Dataset:** ASSISTments 2009 via Atomi/ASSISTments2009
 
-## Required empirical evidence
-A valid run records:
-1. dataset identifier and source;
-2. learner count and interaction count;
-3. learner-disjoint train/validation/test membership counts;
-4. training-only global and skill priors;
-5. BKT parameter values;
-6. pre-response predictions only;
-7. ROC-AUC, Brier score and log loss for each baseline;
-8. cold-start versus repeated-skill metrics where defined;
-9. random seed and software versions.
+**Area:** AI in Education  
+**Study:** multi-model knowledge tracing on learner-disjoint ASSISTments 2009 sequences  
+**Retrieval artifact:** Atomi/ASSISTments2009 pinned revision
+
+## Required evidence
+
+A valid full run records:
+
+1. mirror repository, exact revision, parquet path and SHA-256
+2. learner and interaction counts
+3. learner-disjoint train/validation/test counts and split seed
+4. train-only global and skill priors
+5. fixed and validation-tuned BKT parameters
+6. PFA feature definition using only prior learner-skill outcomes
+7. GRU skill vocabulary, seeds, validation histories and fallback rules
+8. pre-response prediction timing
+9. ROC-AUC, average precision, Brier, log loss and ECE-10
+10. first-seen versus repeated-skill slices
+11. learner-block bootstrap Brier differences versus skill prior
+12. high-error skill diagnostics with minimum support
+13. software environment and generated calibration figure
+
+## Statistical boundary
+
+Interactions within one learner are dependent. The uncertainty analysis therefore resamples learners as blocks instead of pretending individual responses are independent observations.
 
 ## Non-claims
-The bundle does not claim latent mastery is directly observed, that fixed BKT parameters are optimal, that one dataset represents all learners, or that prediction quality establishes pedagogical benefit.
 
-## Professor review path
-`README.md` → `docs/dataset_card.md` → `docs/research_protocol.md` → `src/knowledge_tracing_benchmark/core.py` → `scripts/run_research.py` → `tests/` → generated `results/research_metrics.json`.
+The bundle does not claim latent knowledge is directly observed, prediction quality implies learning benefit, the GRU is a canonical DKT reproduction, one dataset generalizes to all learners, or any model should make high-stakes learner decisions.
