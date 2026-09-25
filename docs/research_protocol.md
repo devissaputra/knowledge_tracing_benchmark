@@ -59,7 +59,9 @@ The phrase **first-seen skill for learner** means the learner has not previously
 ## Statistical boundary
 Interactions from the same learner are dependent. Uncertainty therefore resamples learners as blocks rather than treating interactions as independent observations.
 
-Repeated GRU runs quantify random-seed sensitivity. They are not independent dataset replications.
+Repeated GRU runs quantify optimization random-seed sensitivity. They are not independent dataset replications.
+
+The learner-block bootstrap is also conditional on the fixed learner partition produced by split seed 42. It quantifies sampling uncertainty among held-out learners under that partition; it does not establish robustness to alternative train/validation/test splits.
 
 ## Threats to validity
 ASSISTments 2009 is a historical tutoring dataset. Skill tags can be noisy or composite, opportunity order reflects platform and curriculum decisions, and item difficulty and other contextual variables are omitted from several models. Predictive metrics do not measure instructional benefit, causal learning gain, fairness, or validity for consequential learner decisions.
