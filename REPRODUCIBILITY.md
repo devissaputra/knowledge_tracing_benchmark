@@ -2,13 +2,20 @@
 
 ## Environment
 
-Use Python 3.11 and install the checked-in dependency list:
+The repository keeps two dependency files for different purposes:
+
+- `requirements.txt` provides bounded top-level ranges for normal development and CI;
+- `requirements-repro.txt` pins the exact top-level versions used by the successful empirical GitHub Actions environment recorded on 2026-09-25.
+
+For a reproduction run, use Python 3.11:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-repro.txt
 ```
+
+For ordinary development against compatible newer patch/minor releases, use `requirements.txt`.
 
 ## Frozen run
 
@@ -17,7 +24,7 @@ PYTHONPATH=src pytest -q
 PYTHONPATH=src python src/run_experiment.py
 ```
 
-The runner downloads the pinned ASSISTments mirror revision, records the parquet SHA-256, applies the learner-disjoint split, tunes BKT on validation learners only, fits PFA and GRU models using training data, and evaluates only on final test learners.
+The runner downloads the pinned ASSISTments mirror revision, records the parquet SHA-256, verifies one unique learner row per `user_id`, applies the learner-disjoint split, tunes BKT on validation learners only, fits PFA and GRU models using training data, and evaluates only on final test learners.
 
 ## Frozen comparisons
 
@@ -30,12 +37,21 @@ The study reports:
 5. PFA-style logistic regression;
 6. compact GRU knowledge tracer.
 
-The GRU is repeated at the seeds declared in `src/run_experiment.py`. Brier-score uncertainty is resampled by learner so within-learner interactions remain together.
+The full GRU experiment uses seeds 13, 42, and 73. Individual runs remain in `results/metrics.json`, and the generated summary reports repeated-seed stability. Brier-score uncertainty is resampled by learner so within-learner interactions remain together.
 
 ## Generated evidence
 
-A successful full run writes machine-readable metrics, a human-readable summary, paper results, and figures under `results/` and `paper/`. Numerical claims in the manuscript should come from those generated artifacts rather than being copied by hand.
+A successful full run writes:
+
+- `results/metrics.json`;
+- `results/summary.md`;
+- `results/figures/calibration.png`;
+- `paper/results.md`.
+
+These files are generated from the same runner. Numerical claims in the manuscript should be taken from those artifacts rather than copied independently.
 
 ## Reproduction boundary
 
-Re-running at the pinned mirror revision should reproduce the data bytes. Exact floating-point results can still vary with dependency, BLAS, operating-system, and hardware differences; environment versions are therefore recorded in generated metrics.
+The dataset bytes are pinned by upstream Git revision and recorded SHA-256. Exact floating-point results can still vary with operating system, CPU/GPU implementation, BLAS libraries, and transitive dependencies. The generated metrics therefore record key runtime package versions, and `requirements-repro.txt` records the successful top-level package set.
+
+The exact historical GitHub Actions environment remains the strongest reproduction reference because a Python lock file cannot fully freeze system libraries or hardware behavior.
