@@ -13,6 +13,7 @@ For a reproduction run, use Python 3.11:
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-repro.txt
+pip install pytest==9.1.1
 ```
 
 For ordinary development against compatible newer patch/minor releases, use `requirements.txt`.
