@@ -1,3 +1,7 @@
+# Calculation reading guide: ../CALCULATIONS.md (repository root).
+# BKT prediction = mastery×(1-slip) + (1-mastery)×guess.
+# After a response, Bayes updating and the learning transition produce the next mastery state. Brier and log loss assess probabilities; learner-block bootstrap respects within-learner dependence. Model mastery is not directly measured knowledge.
+
 from dataclasses import dataclass
 
 

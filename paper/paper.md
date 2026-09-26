@@ -64,3 +64,34 @@ Pandey, S., & Karypis, G. (2019). A Self-Attentive Model for Knowledge Tracing. 
 Pavlik, P. I., Cen, H., & Koedinger, K. R. (2009). Performance Factors Analysis — A New Alternative to Knowledge Tracing. *Proceedings of the 14th International Conference on Artificial Intelligence in Education*, 531–538. https://doi.org/10.3233/978-1-60750-028-5-531
 
 Piech, C., Spencer, J., Huang, J., Ganguli, S., Sahami, M., Guibas, L., & Sohl-Dickstein, J. (2015). Deep Knowledge Tracing. *Advances in Neural Information Processing Systems, 28*. https://arxiv.org/abs/1506.05908
+
+
+## Calculation definitions and evidence audit
+
+BKT prediction = mastery×(1-slip) + (1-mastery)×guess.
+
+After a response, Bayes updating and the learning transition produce the next mastery state. Brier and log loss assess probabilities; learner-block bootstrap respects within-learner dependence. Model mastery is not directly measured knowledge.
+
+On 623 held-out learners, the seed-42 GRU achieves ROC-AUC 0.7470 and Brier score 0.1800, compared with 0.6982 and 0.1976 for PFA. The three GRU seeds average ROC-AUC 0.7471 with sample SD 0.0008. These results support better response prediction under this historical benchmark; they do not establish instructional benefit or justify high-stakes interpretations of a learner’s knowledge.
+
+The [calculation guide](../CALCULATIONS.md) provides exact evidence paths and a function-level implementation map.
+
+![Study design](../assets/review_overview.svg)
+
+![Calculation and selected evidence](../assets/review_calculations.svg)
+
+### Selected evidence and interpretation
+
+| Quantity | Value | Unit / meaning | JSON path |
+|---|---:|---|---|
+| skill_prior | 0.20965724966908303 | Brier ↓ | `test_metrics.skill_prior.all.brier` |
+| bkt_fixed | 0.21870446416122305 | Brier ↓ | `test_metrics.bkt_fixed.all.brier` |
+| bkt_validation_tuned | 0.20237712440747457 | Brier ↓ | `test_metrics.bkt_validation_tuned.all.brier` |
+| pfa_logistic | 0.19760582856803 | Brier ↓ | `test_metrics.pfa_logistic.all.brier` |
+| gru_kt_seed_42 | 0.1799516881075459 | Brier ↓ | `test_metrics.gru_kt_seed_42.all.brier` |
+
+These values are read from `results/metrics.json`. They must be interpreted with the split, data status and limitations above. The complete data/model experiment was not rerun in this review. Stored empirical results were inspected, not independently reproduced from raw data.
+
+### Reproduction and claim boundaries
+
+The existing suite requires unavailable dependencies; no full-suite pass is claimed. The figure generator can be checked with `python scripts/build_review_figures.py --check`. This verifies the displayed calculation evidence, not an independent replication of the complete scientific experiment. The manuscript is a working report, not a peer-reviewed publication.
