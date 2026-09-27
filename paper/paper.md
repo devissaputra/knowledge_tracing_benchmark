@@ -88,7 +88,7 @@ The [calculation guide](../CALCULATIONS.md) provides exact evidence paths and a 
 | bkt_fixed | 0.21870446416122305 | Brier ↓ | `test_metrics.bkt_fixed.all.brier` |
 | bkt_validation_tuned | 0.20237712440747457 | Brier ↓ | `test_metrics.bkt_validation_tuned.all.brier` |
 | pfa_logistic | 0.19760582856803 | Brier ↓ | `test_metrics.pfa_logistic.all.brier` |
-| gru_kt_seed_42 | 0.1799516881075459 | Brier ↓ | `test_metrics.gru_kt_seed_42.all.brier` |
+| gru_kt_seed_42 | 0.1799516879180387 | Brier ↓ | `test_metrics.gru_kt_seed_42.all.brier` |
 
 These values are read from `results/metrics.json`. They must be interpreted with the split, data status and limitations above. The complete data/model experiment was not rerun in this review. Stored empirical results were inspected, not independently reproduced from raw data.
 
