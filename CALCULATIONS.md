@@ -28,7 +28,7 @@ Selected recorded values (units and context shown). Full precision below is for 
 | bkt_fixed | 0.21870446416122305 | Brier ↓ | `test_metrics.bkt_fixed.all.brier` |
 | bkt_validation_tuned | 0.20237712440747457 | Brier ↓ | `test_metrics.bkt_validation_tuned.all.brier` |
 | pfa_logistic | 0.19760582856803 | Brier ↓ | `test_metrics.pfa_logistic.all.brier` |
-| gru_kt_seed_42 | 0.1799516881075459 | Brier ↓ | `test_metrics.gru_kt_seed_42.all.brier` |
+| gru_kt_seed_42 | 0.1799516879180387 | Brier ↓ | `test_metrics.gru_kt_seed_42.all.brier` |
 
 Source: [results/metrics.json](results/metrics.json). Values resolve directly from this file when figures are regenerated.
 
