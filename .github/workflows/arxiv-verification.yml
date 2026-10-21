@@ -1,0 +1,67 @@
+name: arXiv verification: real-data robustness
+on:
+  push:
+    branches:
+      - research/kt-arxiv-verification-20261022
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned scientific packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-repro.txt
+          pip install pytest
+      - name: Run repository unit tests
+        run: PYTHONPATH=src python -m pytest -q
+      - name: Reproduce original real-data experiment
+        run: PYTHONPATH=src python src/run_experiment.py
+      - name: Run enhanced baselines and extended GRU on actual data
+        run: PYTHONPATH=src python scripts/robustness_extension.py --epochs 25 --patience 4 --boots 2000 --seeds 13 42 73
+      - name: Validate empirical outputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          original=json.loads(Path("results/metrics.json").read_text())
+          extension=json.loads(Path("results/robustness_extension.json").read_text())
+          assert original["dataset"]["n_learners"]==extension["dataset"]["n_learners"]
+          assert original["dataset"]["n_interactions"]==extension["dataset"]["n_interactions"]
+          assert extension["status"]=="complete_exploratory_real_data"
+          for run in extension["extended_gru"].values():
+              assert len(run["training_history"])>=1
+              assert run["paired_vs_pfa"]["n_learners"]==623
+              assert run["paired_vs_stronger_pfa"]["n_interactions"]==41228
+          print("REAL-DATA VERIFICATION PASSED: numeric artifacts match sample identifiers")
+          PY
+      - name: Upload verification results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kt-arxiv-verification
+          path: |
+            results/metrics.json
+            results/summary.md
+            results/robustness_extension.json
+            results/figures/
+          if-no-files-found: warn
+      - name: Commit empirical records to verification branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/metrics.json results/summary.md results/figures/ results/robustness_extension.json
+          if git diff --cached --quiet; then
+            echo "No changes to empirical artifacts"
+          else
+            git commit -m "research: record rerun original and extended real-data results"
+            git push origin HEAD:research/kt-arxiv-verification-20261022
+          fi
