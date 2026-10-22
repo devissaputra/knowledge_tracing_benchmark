@@ -11,8 +11,8 @@
 
 ## Manuscript and audit sources
 
-- [Final integrated LaTeX manuscript](main_integrated_20261022.tex)
-- [Final numerical/source-package QA results](FINAL_QA_RESULTS_20261022.json)
+- [Canonical updated LaTeX manuscript](main.tex)
+- [Manuscript build and review instructions](BUILD_AND_AUTHOR_REVIEW.md) · [Final numerical/source-package QA results](FINAL_QA_RESULTS_20261022.json)
 - [Source-parity and novelty assessment](PROVENANCE_NOVELTY_AUDIT_20261022.md)
 - [External cohort replication details](external_replication_assist2015.md)
 - [First 2015 protocol](../CONFIRMATORY_PROTOCOL_2015.md) and [corrective-stage protocol](../CONFIRMATORY_STAGE2_PROTOCOL_2015.md)
