@@ -20,8 +20,8 @@
 
 ## Non-negotiable interpretation bounds
 
-The transformed Atomi 2009 parquet lacks the raw problem/event identifiers and independently verified chronology required to establish exact parity with the **corrected official 2009--2010 source**. Learner-disjoint splitting alone does not remove any within-sequence contamination caused upstream. The 2015 new-cohort result does **not** validate 2009 transformation equivalence.
+Direct comparison with the **official corrected ASSISTments 2009--2010 source** disproved exact full-dataset parity: the official corrected file contained 4,163 learners and 283,105 skill-labeled records, while the mirror had 4,148 learners and 274,331 interactions. Among 4,148 shared learners, 3,331 normalized ordered sequences agreed and **817 differed**. The mirror still lacks raw problem/event identifiers necessary to trace all discrepancies; source-specific caveats remain. An exploratory corrected-source refit on 625 held-out learners found GRU Brier 0.18507 versus converged enriched PFA Brier 0.19675 (learner-cluster 95% interval for GRU minus PFA [-0.013718,-0.009862]). The separate fresh 2015 experiment does **not** restore 2009 data parity.
 
 The GRU has ordered cross-skill history and greater capacity, while PFA uses summary history counts. The observed gap **must not** be attributed solely to recurrent architecture. The 2015 improvement does not establish intervention effects, fairness, educational gains, or universal transportability.
 
-The arXiv source package compiles cleanly and automated checks pass, but **author verification, novelty judgment and final arXiv upload are pending**. This is a working preprint candidate, not a peer-reviewed study.
+The revised 11-page arXiv source package compiles cleanly and all 60 new automated checks pass, but **author verification, novelty judgment and final arXiv upload are pending**. This is a working preprint candidate, not a peer-reviewed study.
