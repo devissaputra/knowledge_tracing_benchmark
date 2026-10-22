@@ -1,0 +1,60 @@
+name: External cohort confirmation — second untouched ASSISTments 2015 cohort
+on:
+  push:
+    branches:
+      - research/kt-fresh-cohort-20261022
+    paths:
+      - CONFIRMATORY_STAGE2_PROTOCOL_2015.md
+      - scripts/confirmatory_2015_stage2.py
+      - .github/workflows/confirmatory-2015-stage2.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  second-cohort:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen computational packages
+        run: |
+          python -m pip install -r requirements-repro.txt
+          python -m pip install 'gdown>=5.2,<6'
+      - name: Compile and inspect frozen code
+        run: python -m py_compile scripts/confirmatory_2015.py scripts/confirmatory_2015_stage2.py
+      - name: Run untouched population study
+        run: PYTHONPATH=src python scripts/confirmatory_2015_stage2.py
+      - name: Check full independent source and test outputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('results/confirmatory_assist2015_stage2.json').read_text())
+          assert a['data']['sha256']=='75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0'
+          assert a['data']['stage2_intersection_stage1']==0
+          assert a['data']['stage1_excluded_learners']==5000
+          assert a['data']['stage2_sampled_learners']==5000
+          assert sum(a['protocol'][x] for x in ('train_learners','validation_learners','test_learners'))==5000
+          assert a['paired_brier']['n_learners']==750
+          assert a['paired_brier']['n_bootstrap']==2000
+          print('Recorded status:',a['status'],'directional replication:',a['directional_replication_confirmed'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: assistments2015-stage2-validation
+          path: results/confirmatory_assist2015_stage2.json
+          if-no-files-found: warn
+      - name: Commit frozen results (not raw student records)
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/confirmatory_assist2015_stage2.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: record untouched cohort confirmatory findings'
+            git push origin HEAD:research/kt-fresh-cohort-20261022
+          fi

@@ -1,0 +1,35 @@
+# External-cohort replication of the knowledge-tracing comparison (22 October 2026)
+
+## Rationale and source
+
+The original ASSISTments 2009 transformed-mirror model comparisons were exploratory: the 623-learner test partition had been inspected repeatedly, and the processed mirror had not been shown equivalent to the corrected official 2009 release. We therefore evaluated the previously reported direction of the predictive difference on **a separate-year source**, ASSISTments 2015 Skill Builder Data (official dataset portal: https://sites.google.com/site/assistmentsdata/datasets/2015-assistments-skill-builder-data). The 2015 raw file, linked by the official data portal, has SHA-256 `75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0`, 708,631 original event rows, and 19,840 eligible learner IDs after a fixed record-level validity screen; 24,830 invalid/missing rows were excluded. Response sequences were ordered by numeric `log_id`, with `sequence_id` representing the 2015 skill-builder identifier.
+
+## Prespecified evaluation and protocol deviation
+
+Before the first 2015 evaluation, a protocol fixed learner-based sampling, training/validation/test separation, model settings, the Brier-score estimand, and the bootstrap decision rule. The initial 5,000-learner random sample (seed 20261022) produced a nominal difference favoring GRU but failed its own numeric convergence gate: the enriched PFA SAGA optimizer reached its iteration limit. Its result is retained and **is not counted as confirmation** (GitHub Actions run [39754046492](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39754046492)).
+
+A separately frozen corrective protocol replaced the numerical optimization algorithm only, to solve the same regularized logistic objective: enriched PFA with skill indicators, within-skill prior successes/failures, and across-skill prior successes/failures, using `lbfgs` with `C=1.0`, `max_iter=2000`, and `tol=1e-8`. Crucially, it **excluded all 5,000 participants from the first evaluation** before drawing a second random 5,000-learner sample with seed 20261023. The corrective decision was motivated by optimizer nonconvergence, not by searching test sets for favorable results. Within the second sample, learner-disjoint train/validation/test partitions contained 3,500/750/750 students. The GRU configuration remained unchanged: seed 42, fixed embedding and hidden sizes, Adam learning rate 0.002, up to 25 epochs, patience 4, with epoch selection restricted to validation data. The best validation epoch was 7 (11 epochs executed). The logistic solver converged in 484 iterations, with no convergence warnings.
+
+The primary comparison was fixed as the *interaction-weighted paired Brier loss difference (GRU minus enriched PFA)*, with 2,000 learner-cluster bootstrap resamples (seed 20261023). The stated directional success criterion was an upper 95% percentile-interval endpoint below zero, conditional on meeting data and numerical diagnostic gates. This is an intentionally narrow *predictive replication* criterion; it is not an intervention-effect or causal-model-attribution test.
+
+## New held-out findings
+
+The untouched stage-2 test set contained 750 learners and 26,697 response interactions (sampled 5,000 learners contained 172,614 interactions before splitting). Enriched PFA achieved ROC-AUC **0.681286**, Brier **0.186954**, log loss **0.556679**, and ECE-10 **0.016943**. Extended GRU achieved ROC-AUC **0.699683**, Brier **0.182273**, log loss **0.543455**, and ECE-10 **0.008200**. The primary pooled Brier difference (GRU minus PFA) was **−0.0046813**, with learner-cluster percentile 95% interval **[−0.0060730, −0.0033457]**. The interval excludes zero in the predicted direction, and all prespecified numerical/data gates passed. The observed correctness rate in the test sample was 0.716972.
+
+This second-stage result **replicates the direction of the predictive Brier advantage on a new ASSISTments 2015 learner subset**, without reusing any learner from the 5,000 selected in the first 2015 test. The earlier nonconverged experiment remains reported as a diagnostic pilot, not as an independent positive confirmation.
+
+## Limits on interpretation
+
+This is a new *cohort and learner population*, not an untouched reanalysis of the previous ASSISTments 2009 mirror. The skill-builder units in 2015 (`sequence_id`) are not guaranteed to be equivalent to 2009 skill codes. Models were retrained on 2015 training learners, so this is not direct frozen-weight cross-domain transport. The richer ordered history and greater capacity of the GRU remain confounded with architectural differences relative to aggregate-count PFA; **the result does not identify the causal effect of recurrence**. The study also does not prove equivalence between the transformed 2009 mirror and the corrected official 2009 event-level release, nor establish transportability to other schooling systems. The bootstrap interval is conditional on the selected sample and fixed code/analysis choices. Author and independent methodological review remain necessary.
+
+## Reproducibility evidence
+
+- Frozen first protocol: [CONFIRMATORY_PROTOCOL_2015.md](../CONFIRMATORY_PROTOCOL_2015.md).
+- Corrective protocol fixed before the second test: [CONFIRMATORY_STAGE2_PROTOCOL_2015.md](../CONFIRMATORY_STAGE2_PROTOCOL_2015.md).
+- First code/results: [scripts/confirmatory_2015.py](../scripts/confirmatory_2015.py), [stage-1 JSON](../results/confirmatory_assist2015.json).
+- Second code/results: [scripts/confirmatory_2015_stage2.py](../scripts/confirmatory_2015_stage2.py), [stage-2 JSON](../results/confirmatory_assist2015_stage2.json).
+- Official execution: [stage-2 GitHub Actions run 39754854426](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39754854426).
+
+### Manuscript-ready concise paragraph
+
+> We conducted a distinct-year replication using the officially linked ASSISTments 2015 Skill Builder file. After a first 5,000-learner evaluation was deemed inconclusive because the enhanced PFA optimizer had not converged, we excluded every learner from that attempt and froze a second, nonoverlapping 5,000-learner sample, retaining learner-disjoint training (3,500), validation (750), and test (750) partitions. The numerical PFA solver was changed to a converged LBFGS fit of the same regularized logistic objective, while the GRU and primary Brier-score criterion remained prespecified. On 26,697 fresh test interactions, the extended GRU achieved Brier 0.18227 and AUC 0.69968 versus enriched PFA Brier 0.18695 and AUC 0.68129. The interaction-pooled paired Brier difference (GRU minus PFA) was −0.00468 (95% learner-cluster bootstrap interval [−0.00607, −0.00335]; 2,000 replicates). All convergence and provenance checks passed. This supports directional predictive replication within a distinct ASSISTments cohort but cannot isolate the contribution of recurrent architecture or demonstrate generalization beyond the tested contexts.
