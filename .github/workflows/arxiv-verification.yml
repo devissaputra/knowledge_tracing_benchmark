@@ -1,4 +1,4 @@
-name: arXiv verification: real-data robustness
+name: "arXiv verification: real-data robustness"
 on:
   push:
     branches:
