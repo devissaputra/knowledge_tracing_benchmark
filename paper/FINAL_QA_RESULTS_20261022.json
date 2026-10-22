@@ -1,0 +1,295 @@
+{
+  "date": "2026-10-22",
+  "checks_total": 56,
+  "passed": 56,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "Expected evidence: 4,148",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 274,331",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 623",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 41,228",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.7491",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.1791",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.7135",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.1929",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 708,631",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 24,830",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 19,840",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 3,500",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 750",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 26,697",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.68129",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.69968",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.18695",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 0.18227",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: -0.0046813",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: -0.0060730",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: -0.0033457",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 2,000",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 484",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 20261023",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 75e1f46131d5897a388c82411bc303",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 39754854426",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 39754046492",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected evidence: 2053b7ea63f1d5ea953834bf82ed8954",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: mirror-specific",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: not counted as clean confirmation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: cannot isolate recurrent architecture",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: does not retroactively validate",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: does not prove",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: not peer reviewed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Scope guardrail: cannot identify",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "All citation keys resolved",
+      "passed": true,
+      "detail": "cites=14, unique=10, reference entries=10"
+    },
+    {
+      "check": "2015 official source cited",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No raw individual dataset embedded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Figures available",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Pilot nonconvergence documented",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Corrected-stage method documented",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Data source contrast maintained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Log no LaTeX Error",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Log no Citation `",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Log no Reference `",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Log no Overfull \\hbox",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Log no ! Undefined control sequence",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PDF is valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PDF has multiple pages",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "PDF extracted text contains new empirical result",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "All pages have extracted text",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No runtime outputs in arXiv archive",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Expected arXiv source files",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Clean-room arXiv source compiles twice",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Clean-room PDF exists",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Clean-room log no overfull boxes",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "files": {
+    "main.pdf": "ba643d4581d860bcf0bd0cd2eca60f628ec7143bdf30803f607acfc536eeef5e",
+    "Paper1_arXiv_Updated_20261022.zip": "358472bb04f92f931c4f7f7cf8e989ac974d703d1f918ee70ab097c274a1f65b",
+    "PROVENANCE_AND_NOVELTY_AUDIT.md": "08c3adc7f889beefec8d7ce74ebc1d8d760ec1d6421935ba44731b89a00fef5b"
+  },
+  "scientific_reproducibility": "Externally executed and previously verified via GitHub Actions; this QA does not re-execute raw-data study.",
+  "author_gate": "Pending"
+}
