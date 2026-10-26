@@ -1,4 +1,4 @@
-# Toward a History-Budget Sensitivity Audit for Knowledge Tracing: Source Provenance, Information-Restricted Baselines, and Cross-Year Evidence
+> **ARCHIVED DRAFT NOTICE (26 October 2026):** This file preserves the design-stage manuscript with PENDING fields. Its outcomes are now executed and documented in [METHODOLOGICAL_2026_EXECUTED_RESULTS.md](METHODOLOGICAL_2026_EXECUTED_RESULTS.md) and the complete [main_methodological_2026.tex](main_methodological_2026.tex). Do not submit this archived draft as the final paper.\n\n# Toward a History-Budget Sensitivity Audit for Knowledge Tracing: Source Provenance, Information-Restricted Baselines, and Cross-Year Evidence
 
 **26 October 2026 — research draft, not a completed new experiment or a submission-ready replacement.** The numerical results of the newly frozen Stage-3 history-budget study must be inserted only after independent runner success and author QA. Earlier verified numerical results below are historical evidence and were already used for earlier preprint drafts.
 
