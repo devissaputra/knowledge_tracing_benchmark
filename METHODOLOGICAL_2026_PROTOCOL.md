@@ -1,0 +1,28 @@
+# Frozen 2026 methodological extension: matched history budgets (26 October 2026)
+
+This document is committed **before any stage-3 outcome is evaluated**. Previous ASSISTments 2009 mirror, corrected-source 2009, and 2015 stage-1/2 results have been examined, so this is a **new, prospectively specified 2015 holdout analysis conditional on earlier model development**, not a public registry preregistration and not a new educational intervention.
+
+## Research question and defensible novelty
+How do the *number of available prior student responses* and the *representation of their order* interact with the predictive differences between count-based generalized PFA and a small recurrent knowledge tracer, on the **same response targets**? This study does not claim to invent information-parity evaluation (see Padi et al., 2026) or cross-cohort benchmarks (Polydoros, 2026). The contribution tested here is a frozen **history-budget response curve** on a fresh learner cohort, linked to independent corrected-source/mirror provenance audits.
+
+## Official source and untouched sample
+Use exact original bytes of **ASSISTments 2015 Skill Builder Data**, SHA-256 `75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0`, downloaded only through the official portal link (as in existing scripts). The source contains 19,840 learners eligible under fixed existing stage-1/2 filters, ordered within learner by numeric `log_id`; use `sequence_id` as the 2015 skill-builder unit.
+
+Recreate stage-1 sampled learners with `random.Random(20261022).sample(sorted_eligible_ids, 5000)`; remove them. Recreate stage-2 sampled learners with `random.Random(20261023).sample(sorted_remaining, 5000)`; remove them. Independently sample **4,000** learners with `random.Random(20261026).sample(sorted_remaining_after_both,4000)`. Assert absolutely zero overlap with all previously evaluated 10,000 learners. Learner-disjoint **70/15/15** train/validation/test, split seed **20261026** (2,800/600/600). Test uses only responses at index t>=1 (the first response has no past to compare), regardless of history budget.
+
+## Models and information budget
+History budgets `K=1` and `K=20`, determined by number of *prior response events*, never time. At target t, each model may access only current skill ID and the preceding `min(K,t)` pairs (skill ID and correctness); **never current correctness**. Training and inference both use exactly this restriction.
+
+1. **Window-count PFA+**: logistic regression with current skill one-hot, within-current-skill correct/incorrect counts and all-skill correct/incorrect counts derived *only* from the last K prior events. Regularized logistic regression `C=1.0`, `lbfgs`, `tol=1e-7`, `max_iter=1600`, fitted on training interactions only. Standardize numerical features on training only.
+2. **Ordered-feature logistic**: same as window-count PFA+, plus correctness of latest prior interaction, latest occurrence of current skill (0 absent; +/-1 for correct/incorrect) and distance to most recent same-skill observation capped at K+1. The selected features are all derivable from the identical allowed history. This tests a transparent nonlinear-history proxy without upgrading PFA to an unrelated data stream.
+3. **Window-GRU**: train a compact recurrent model on only the last K (skill,response) tokens with the current skill query embedded separately; variable-length sequences padded only to batch maximum; final valid hidden state is read per target. Embeddings 24/12, hidden 48; Adam LR0.002, batch 256, 12 epochs max, early stopping patience3 on *validation only*, seed42. Same model capacity across K.
+
+Each K uses the exact same train/validation/test labels and learners, no within-test tuning. Models retrain for each K. This is **information-source parity**, not parameter/complexity parity, and does not identify architectural causal effects.
+
+## Estimands and numerical criteria
+Primary descriptive outputs: for each model and K report held-out ROC-AUC, Brier, log loss, ECE10, held-out interactions, and learner count; report GRU minus ordered-logistic and GRU minus count-logistic pooled interaction-weighted Brier differences with paired **2000 learner-cluster bootstrap percentile CIs** (seed 20261026). Report change in each model's Brier moving K=1 to K=20 and GRU-vs-ordered gap change. These comparisons are **exploratory multiple comparisons**; intervals are descriptive and not a controlled family-wise hypothesis rejection or causal effect. Do not label the result a state-of-the-art benchmark or universal replication.
+
+Sanity gates: checksum, exclusion counts, zero prior-cohort overlap, exact test IDs and target index agreement across all models/K, full train-only preprocessing, history prefix tests verifying the target answer is absent and only previous K events used, numerical convergence no warnings, finite outputs, numeric probabilities in [0,1], 2000 valid learner bootstrap draws. If any fail, output `inconclusive` and preserve diagnostics; never fabricate or quietly substitute results.
+
+## Non-overclaiming and next steps
+Only merge observed results into manuscript after actual GitHub Actions real-data execution and critical result inspection. Earlier corrected-2009 and 2015 evidence remains separately reported. A 2026 survey/literature novelty statement must explicitly recognize recent matched-input and leakage papers. Additional modern datasets and AKT are useful but NOT claimed executed in this extension. No student-level data exported; only cohort hashes and aggregate predictions/statistics retained.
