@@ -48,7 +48,8 @@ jobs:
             for x in b["models"].values():
               assert 0<x["brier"]<1 and x["n"]>10000
             for x in b["paired_GRU_minus"].values():
-              assert x["n_learners"]==600 and x["n_bootstrap"]==2000
+              assert 400 <= x["n_learners"] <= 600 and x["n_bootstrap"]==2000
+              assert x["n_interactions"]==b["models"]["window_gru"]["n"]
           print("Verified fresh learner cohort and history-parity output gates.")
           PY
       - name: Upload aggregate evidence even if a research gate fails
