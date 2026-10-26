@@ -1,0 +1,261 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,booktabs,array,graphicx,caption,subcaption}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue,linkcolor=blue]{hyperref}
+\usepackage{natbib}
+\sloppy\emergencystretch=4em
+\setlength{\parskip}{0.14em}\renewcommand{\baselinestretch}{0.96}
+\setlength{\parindent}{0pt}
+\title{When Knowledge-Tracing Rankings Depend on Available History\\\large A Source-Correction and Matched-Information Audit on ASSISTments 2009--2015}
+\author{Devis Wawan Saputra\\\small Independent Researcher, Indonesia\\\small ORCID: \href{https://orcid.org/0000-0002-7133-9410}{0000-0002-7133-9410}}
+\date{26 October 2026\\\small Revised empirical methodological manuscript; not peer reviewed}
+\begin{document}
+\maketitle
+\begin{abstract}
+Predictive comparisons between transparent and recurrent knowledge-tracing models can reflect unequal access to response history, transformations of historical datasets, or feature representation rather than recurrent architecture alone. We combine corrected-source provenance checks with a frozen, matched-history-budget test on independently sampled ASSISTments 2015 learners. A direct audit rejects exact equivalence between a frequently used transformed ASSISTments 2009 mirror (4,148 learners; 274,331 labeled responses) and the corrected official release: 817 shared learners have different normalized skill--response sequences. Earlier re-executions and a new 2015 cohort had favored GRU over count-based PFA, but supplied different history representations. For a new 2015 experiment, we excluded all 10,000 learners in the previous two evaluations and sampled 4,000 untouched learners. On the same 20,592 held-out next-response targets from 582 evaluable learners, we compared window-count logistic regression, an order-aware logistic baseline, and a window-GRU, each restricted to only the preceding one or 20 labeled interactions and the current skill identifier. With a one-event history, Brier scores were 0.17788, 0.17788, and 0.18000, respectively; with 20 events, they were 0.17667, 0.17389, and 0.17514. The GRU-minus-order-aware Brier difference was +0.00212 (95\% learner-cluster interval [+0.00120,+0.00301]) for one event and +0.00125 ([+0.00008,+0.00243]) for 20. These descriptive comparisons reverse the apparent recurrent advantage seen against less expressive history summaries, while longer history improves all three models. The evidence identifies sensitivity to observable-history budget and model specification, \emph{not} the causal contribution of recurrence, modern classroom effectiveness, or universal superiority. The 2015 window analysis uses one split and neural seed and should be replicated on additional domains.
+\end{abstract}
+\textbf{Keywords:} AI in education; knowledge tracing; ASSISTments; leakage-aware evaluation; BKT; PFA; recurrent networks; information parity; history window; model ranking sensitivity; reproducibility.
+
+\section{Introduction}
+Knowledge tracing predicts a learner's subsequent response from observed practice history. The probabilistic outputs can be used to rank cases for inspection and to support adaptive content, but predictive validity must not be conflated with instructional value. A model that has learned response regularities on a historical tutoring platform may still fail under new curricula, item policies, or student populations.
+
+A second challenge concerns experimental comparison. A random row split can let responses from the same learner appear in both model development and evaluation. Such a split evaluates interpolation within known learner histories rather than the intended generalization to unseen learners. Another challenge is information symmetry: a recurrent model may use prior outcomes from other skills while a classical per-skill model sees only within-skill history. Predictive differences then reflect both representation and architecture.
+
+Rather than introduce a new model, this study audits the empirical scope of a controlled learner-disjoint benchmark, explicitly recording probabilistic performance, slice results, calibration, and uncertainty limits. It answers: (RQ1) How do conventional baselines compare on a frozen learner-disjoint partition? (RQ2) Does prediction differ between a learner's first observed and later encounters with a skill? (RQ3) What do the resampling intervals establish under a fixed learner split? (RQ4) Do extended training and a richer transparent baseline materially change the results, and what remains untested? (RQ5) Does the direction of the predictive difference replicate on an independent-year cohort? (RQ6) Holding the learner sample, response targets and observable history restricted, does representation of that history change the apparent advantage of recurrence, and how do predictions change between K=1 and K=20 prior events?
+
+\section{Related Work and Positioning}
+BKT recursively updates a latent mastery probability using learning-transition, guess, and slip assumptions \citep{corbett1995}. PFA predicts responses with logistic effects of skill identity and previous successes and failures \citep{pavlik2009}. Deep Knowledge Tracing introduced recurrent sequence representations \citep{piech2015}. Later evaluations demonstrated that claims of deep-model superiority are highly contingent on datasets, baselines, and evaluation design \citep{gervet2020}. Broader surveys emphasize inconsistent versions, preprocessing, and metric protocols across commonly named knowledge-tracing datasets \citep{abdelrahman2023}. More recent work directly addresses correction-aware and cross-cohort benchmarking. A 2026 replication package by Polydoros compares classical and deep approaches on the corrected ASSISTments 2009 and 2015 cohorts with learner-level resampling \citep{polydoros2026}. Padi and colleagues (2026) show empirically that duplicate multi-skill records and asymmetries in the information available to different model families can change reported rankings \citep{padi2026}. Badran and Preisach (2026) independently study leakage-free embeddings and skill-specific recency, establishing that these methodological ideas already appear in contemporary work \citep{badran2026}. These advances preclude claiming novelty for learner-disjoint splitting, calibration analysis, or information matching in isolation. They also provide corrected-source and cross-cohort comparators, so we make no state-of-the-art or architecture-advantage claims. The distinctive contribution here is the auditable sequence of a frozen transformed-mirror reproduction, contrasting uncertainty targets, an explicitly labeled exploratory information-budget audit, and a separate-year predictive replication that retains rather than conceals a nonconverged first pilot. Unlike a model-development paper, this investigation treats exact source provenance, estimand distinctions, and explicit failure of source parity as empirical audit findings rather than claiming a state-of-the-art architecture.
+
+\section{Study Contribution and Evidence Hierarchy}
+We provide six bounded outputs: (1) an executable source- and learner-split-pinned reproduction of six models and model-specific probability metrics on the transformed 2009 mirror; (2) a distinction between equal-learner and interaction-pooled Brier uncertainty targets; (3) an exploratory same-split sensitivity analysis comparing cross-skill PFA summary features with extended GRU training; and (4) a direct event-count and ordered-sequence parity audit against the official corrected 2009 source; (5) an exploratory official corrected-2009 source sensitivity analysis; and (6) a documented independent-year 2015 predictive replication on a distinct set of learners. The two evidence tiers must not be conflated: post-inspection 2009 improvements are exploratory, while the second 2015 cohort is fresh with respect to learner identity and outcome inspection. The second-stage 2015 protocol was nonetheless fixed \emph{after} observing a failed optimizer convergence diagnostic in the first 2015 pilot; its corrective choice and chronology are disclosed, and the result is not described as prospectively registered or independently peer-reviewed. These analyses compare unequal information representations and model capacity; they cannot identify a recurrence-only effect. (7) We add a newly frozen third ASSISTments 2015 learner sample, disjoint from both earlier samples, comparing three predictors at two \emph{matched available history} budgets. Unlike the earlier pilot and exploratory comparisons, these model/feature windows were fixed before evaluating the new learner cohort. The upgrade tests the dependency of model ranking on representation and history horizon; it does not invent information-parity benchmarking.
+
+\section{Data and Evaluation Protocol}
+\subsection{Dataset origin and observed differences from the corrected source}
+The intended underlying source is the ASSISTments 2009--2010 Skill Builder data documented by its maintainers \citep{assistmentsdata}; the ASSISTments tutoring platform and its formative-assessment context were described by \citet{feng2009}. The execution pipeline reads \texttt{Atomi/ASSISTments2009} at pinned revision \texttt{c72a664a9693547fb206652}\allowbreak\texttt{ed2ce18e62d320c7d} and file \path{data/train-00000-of-00001.parquet}. The archived file SHA-256 is \texttt{2053b7ea63f1d5ea953834bf82ed8954}\\\texttt{3e1f11bae1e3e7535c2f9d7f49d4dda7}. The mirror contains one serialized sequence per learner. The empirical record reports 4,148 unique learners and 274,331 binary response observations.
+
+\textbf{Direct provenance audit.} The ASSISTments maintainers corrected an earlier Skill Builder release after identifying duplicated records \citep{assistmentsdata}. We downloaded the official corrected student--problem CSV directly from the file they link (SHA-256 \texttt{162ef8d2d28bcbfea6591a282994062bd8d5eaa00636544292a0d268dca6e5da}) and compared it with the exact pinned mirror used for the model run. The corrected file contains 346,860 student--problem records, of which 283,105 contain a usable binary outcome and nonmissing skill identifier, from 4,163 learners. The mirror comprises 274,331 responses from 4,148 learners. All 4,148 mirror learner IDs occur in the corrected source; 15 additional learners occur only in the corrected source. Among the 4,148 shared learners, 3,331 have identical sequences of normalized (skill identifier, binary response) pairs when official records are ordered by numeric \texttt{order\_id}; 817 do not. The same 3,331 satisfy event-count and skill--response-multiset equality. Accordingly, \emph{exact whole-dataset parity is empirically disproved}, not merely unverified. The original mirror-derived predictive results remain correct for the pinned mirror, but cannot be represented as estimates from the corrected official 2009 release. This audit does not identify which upstream transformation rule caused the discrepancies. Although corrected-source learner and event keys can be checked directly, the mirror omits original student--problem event IDs, so a complete one-to-one event crosswalk and independently timestamped chronology are not recoverable. Numeric \texttt{order\_id} was used as a documented ordering convention, not as proof of real-world time order. The full aggregate audit, source hashes and code are archived in GitHub Actions run \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39773920168}{39773920168}; individual student data are not redistributed.
+
+\subsection{Officially linked 2015 independent-year source}
+For the different-year replication we use the original ASSISTments 2015 Skill Builder CSV linked by the project's official dataset portal \citep{assistments2015}. The original file SHA-256 is \texttt{75e1f46131d5897a388c82411bc303}\texttt{2279899cb1f1e66a9043354d41234407a0}. It contains 708,631 records; 24,830 were excluded by the frozen missingness/validity filter, leaving 19,840 eligible learner IDs. The study constructs within-learner sequences in ascending numerical \texttt{log\_id} order, using \texttt{sequence\_id} as a 2015 skill-builder identifier; these identifiers are not the same construct as the 2009 mirror's \texttt{skill\_ids}. This different-year study requires new fitting on 2015 training learners and does not test a frozen 2009-trained model on 2015. The analysis source, hashes, sampling seeds, and both pilot and corrective-stage outcomes are archived in the repository's research branch. The 2015 result does not retroactively validate the 2009 mirror transformation.
+
+\subsection{Partition unit, leakage checks, and model selection}
+Learners are shuffled at seed 42 and divided into training (2,903), validation (622), and test (623) partitions. The runner first rejects duplicated \texttt{user\_id} sequence rows, then forbids learner overlap by partitioning whole serialized rows. It reports 194,951 training responses and 41,228 test responses. This check establishes no repeated \emph{learner identifier} across partitions, but does not verify the identity or chronological ordering of individual raw student--problem events. The validation set determines the BKT parameter choice and neural stopping epoch. Global and skill priors, PFA coefficients, and recurrent embeddings are learned from the training partition only. Every stateful model emits its prediction \emph{before} observing the target response.
+
+\subsection{Model specifications}
+\textbf{Global prior.} The binary response probability is the aggregate training correctness fraction. \textbf{Skill prior.} The response probability is the training correctness frequency for the queried skill, with a global fallback. \textbf{Fixed BKT.} Initial mastery, learning, guess, and slip probabilities are respectively 0.20, 0.15, 0.20, and 0.10. The prediction for a current response uses the previous posterior mastery state:
+\begin{equation}
+P(Y_t=1\mid H_{t-1})=m_{t-1}(1-s)+(1-m_{t-1})g.
+\end{equation}
+\textbf{Validation-tuned BKT.} The four parameters are selected from a fixed grid using validation log loss; the archived selection is initial mastery 0.40, learning 0.15, guess 0.30, and slip 0.20. \textbf{PFA.} A regularized logistic model uses a skill intercept and preceding learner--skill success/failure counts. \textbf{GRU.} A 64-dimensional recurrent hidden state processes previous response-conditioned skill tokens and is queried with the next skill embedding; seed-42 predictions for each learner's first response fall back to a training skill/global prior. Seeds 13, 42, and 73 were run for at most eight training epochs with validation-loss monitoring.
+
+\textbf{Comparability caveat.} PFA counts only prior outcomes on the queried skill; the GRU can exploit the complete previous cross-skill sequence. The observed gap does not isolate the effect of nonlinearity or recurrence. The executed extension adds a PFA comparator with prior cross-skill success/failure counts, and longer GRU training. Because this comparator is still a compact summary rather than a full ordered-history model, the test does not isolate the effect of model architecture.
+
+\subsection{Evaluation, uncertainty, and estimands}
+ROC-AUC and average precision quantify discrimination and ranking. Brier score and log loss quantify probabilistic accuracy. Expected calibration error (ECE-10) compares confidence and observed response frequencies in ten probability bins, but is sample/bin-sensitive. A learner-first skill occurrence means that skill key has not appeared previously \emph{for that learner}; it is not necessarily unseen in training.
+
+There are two distinct aggregation targets in the existing report. The primary table pools response-level losses, giving interaction-weighted estimates:
+\begin{equation}
+\widehat{B}_{\mathrm{event}}(f)=\frac{1}{N}\sum_{i=1}^{n}\sum_{t=1}^{T_i}(y_{it}-\hat p_{it}^{(f)})^2,\quad N=\sum_i T_i.
+\end{equation}
+The archived cluster bootstrap instead averages per-learner loss differences:
+\begin{equation}
+\widehat{\Delta}_{\mathrm{learner}}=\frac{1}{n}\sum_i\frac{1}{T_i}\sum_t\left[(y_{it}-\hat p_{it}^{(f)})^2-(y_{it}-\hat p_{it}^{(g)})^2\right].
+\end{equation}
+That is a defensible \emph{different} estimand. It must not be interpreted as an uncertainty interval for the event-pooled Brier difference. A paired learner-cluster bootstrap for the event-weighted difference resamples learners and recomputes the ratio of summed losses to summed response counts in each replicate. The executed supplement implements this correction, with 2,000 learner-resampling draws per comparison. Each draw recomputes the ratio of the sampled cluster loss sums to the sampled cluster response counts; the resulting percentile intervals are conditional on this one previously examined test partition.
+
+\section{Reproduction and Exploratory Robustness Results}
+\subsection{Overall held-out comparisons}
+Table~\ref{tab:results} reports the results from a new full execution of the original study on the pinned real-data mirror. Reproduced original values agree with the archived record to within $4\times10^{-8}$ for ROC-AUC and much more closely for Brier score.
+\begin{table}[ht]
+\centering\small
+\caption{Reproduced results on 41,228 responses from 623 learner-disjoint test learners (seed-42 original GRU). Lower Brier, log loss, and ECE are better.}
+\label{tab:results}
+\begin{tabular}{lrrrrr}\toprule
+Model & ROC-AUC & AP & Brier & Log loss & ECE-10\\\midrule
+Global prior & 0.5000 & 0.6747 & 0.2197 & 0.6313 & 0.0160\\
+Skill prior & 0.6234 & 0.7669 & 0.2097 & 0.6096 & 0.0145\\
+Fixed BKT & 0.6746 & 0.7806 & 0.2187 & 0.6360 & 0.1226\\
+Validation-tuned BKT & 0.6722 & 0.7770 & 0.2024 & 0.5928 & 0.0279\\
+PFA logistic & 0.6982 & 0.8074 & 0.1976 & 0.5840 & 0.0413\\
+GRU (seed 42) & \textbf{0.7470} & \textbf{0.8439} & \textbf{0.1800} & \textbf{0.5382} & \textbf{0.0133}\\\bottomrule
+\end{tabular}
+\end{table}
+The recorded GRU-minus-PFA Brier difference is approximately $-0.01765$ (an 8.9\% relative reduction with PFA as denominator), and ROC-AUC difference is $+0.04878$. These are \emph{descriptive differences} on one test partition. A separate \emph{exploratory} paired uncertainty calculation for the later strengthened comparison is reported below. In particular, the fixed-parameter BKT achieves higher AUC than the training-skill prior while having worse Brier score, illustrating why ranking and probability quality must be considered separately.
+
+\begin{figure}[ht]\centering\includegraphics[width=.83\linewidth]{kt_brier.png}\caption{Reproduced response-pooled Brier scores for the original six benchmark models on the pinned real-data mirror.}\end{figure}
+
+\subsection{First skill occurrence versus repeated occurrences}
+\begin{table}[ht]\centering\small
+\caption{Recorded PFA and seed-42 GRU performance by within-learner skill occurrence.}\begin{tabular}{lrrrrr}\toprule
+Slice & N & PFA AUC & GRU AUC & PFA Brier & GRU Brier\\\midrule
+First observed skill & 6,193 & 0.6499 & 0.7224 & 0.2244 & 0.2094\\
+Repeated skill & 35,035 & 0.7068 & 0.7548 & 0.1929 & 0.1747\\\bottomrule
+\end{tabular}\end{table}
+The GRU has lower recorded Brier scores in both slices. However, this does not imply validated mastery estimation or a benefit for instructional decisions. Difficulty mix and number of available previous responses vary by slice.
+
+\subsection{Random-seed variability and archived learner uncertainty}
+Across the three prespecified GRU seeds the mean ROC-AUC is 0.74708 (sample SD 0.00083) and mean Brier score is 0.17975 (sample SD 0.00019). These quantify three optimization restarts on the same data split, not independent replications or evidence of robustness across populations.
+
+The original run reproduces a \emph{mean per-learner} Brier difference between the seed-42 GRU and skill prior of $-0.02888$, with 95\% learner-block percentile interval $[-0.03439,-0.02365]$ for 623 learners. This interval must be linked to the learner-averaged quantity given above and cannot be relabelled as the pooled response-level comparison. The new cluster bootstrap for the interaction-pooled GRU--PFA comparison is presented separately below; its estimand must not be conflated with the original equal-learner-weighted interval.
+
+\subsection{Independent execution reproducibility check}
+The original end-to-end workflow was rerun in GitHub Actions (run \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39655888620}{39655888620}) on 22 October 2026. The downloaded real-data file matched the archived SHA-256 \texttt{2053b7ea63f1d5ea953834bf82ed89543e1f11bae1e3e7535c2f9d7f49d4dda7}. Learner and response counts, learner partitions, original baseline Brier scores, and full-run AUCs matched archived results at reporting precision; the maximum original AUC drift was below $4\times10^{-8}$. Both code tests and the full data-validation job finished successfully. This is a computational reproduction of \emph{the same pinned third-party mirror}, not a parity audit against the official corrected source.
+
+\subsection{Direct corrected-source parity test}
+The corrected official release has 4,163 learners, including the 4,148 with sequences in the mirror. Normalizing the skill IDs and sorting the corrected file by numeric \texttt{order\_id} within each learner gives exact sequence agreement for 3,331 shared learner IDs; it fails for 817. Table~\ref{tab:parity} shows the necessary-condition comparison. Thus the frozen 2009 mirror results cannot be relabeled as corrected-release results. Ordered pair equality provides some external corroboration for unaffected learners, but it does not restore original problem-level identifiers to the mirror or prove that the \texttt{order\_id} convention captures the physical event chronology.
+\begin{table}[ht]\centering\small
+\caption{Official corrected 2009 skill-builder records compared with the pinned Atomi sequence mirror. Official labeled rows exclude records without a usable skill identifier.}
+\label{tab:parity}
+\begin{tabular}{lrr}\toprule
+Measure & Corrected official & Pinned mirror\\\midrule
+Unique learners & 4,163 & 4,148\\
+Skill-labeled responses & 283,105 & 274,331\\
+Shared learner IDs & \multicolumn{2}{c}{4,148}\\
+Identical ordered skill--response sequences & \multicolumn{2}{c}{3,331 shared learners}\\
+Different ordered sequences & \multicolumn{2}{c}{817 shared learners}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Exploratory model and training-budget sensitivity}
+To reduce the original information asymmetry, an enriched PFA baseline uses skill identity and both skill-specific and overall prior success/failure counts, with no access to the current response. The recurrent model still has richer ordered history and greater representational capacity; the comparison improves historical-information matching but does not equalize feature classes or prove an architectural mechanism. Extended GRU optimization used seeds 13, 42, and 73, at most 25 epochs, validation-loss early stopping and patience four. All three fits selected their best validation state before the cap. Table~\ref{tab:robust} summarizes the recorded out-of-sample scores \emph{on the same already-inspected test partition}.
+
+\begin{table}[ht]\centering\small
+\caption{Exploratory robustness results from real-data reruns. All rows use the same 623 test learners (41,228 responses); GRU settings are exploratory revisions after earlier test inspection.}
+\label{tab:robust}
+\begin{tabular}{lrrrr}\toprule
+Model & ROC-AUC & Brier & Log loss & Best epoch\\\midrule
+Standard PFA & 0.6982 & 0.1976 & 0.5840 & --\\
+PFA + cross-skill counts & 0.7135 & 0.1929 & 0.5709 & --\\
+GRU (seed 13, extended) & 0.7471 & 0.1793 & 0.5367 & 13\\
+GRU (seed 42, extended) & 0.7491 & 0.1791 & 0.5357 & 13\\
+GRU (seed 73, extended) & 0.7498 & 0.1789 & 0.5358 & 11\\\bottomrule
+\end{tabular}
+\end{table}
+
+Relative to the stronger PFA, the extended seed-42 GRU has a response-pooled Brier improvement of $-0.013874$ (paired learner-cluster 95\% percentile interval $[-0.017231,-0.011049]$). Results for seeds 13 and 73 are $-0.013583$ [$-0.017004,-0.010911$] and $-0.014020$ [$-0.017418,-0.011123$], respectively. These bootstrap intervals (2,000 resamples of learners) describe conditional uncertainty \emph{on the fixed test partition after exploratory model changes}; they should not be interpreted as confirmatory evidence from an untouched test sample. The stronger PFA itself improves Brier score relative to the original PFA by $-0.004680$ [$-0.005900,-0.003537$], underscoring the effect of history-feature availability.
+
+\begin{figure}[ht]\centering\includegraphics[width=.90\linewidth]{robust_comparison.png}\caption{Exploratory robustness: real-data ROC-AUC and Brier score for PFA variants and three extended GRU seeds. This is a same-split sensitivity comparison, not an independent validation sample.}\end{figure}
+
+\begin{figure}[ht]\centering\includegraphics[width=.83\linewidth]{kt_auc.png}\caption{Reproduced test ROC-AUC across original models, shown descriptively for the fixed split.}\end{figure}
+
+\subsection{Exploratory predictive sensitivity on corrected official 2009 data}
+To determine how much the corrected source changes the predictive comparison, we ran a separate, prewritten \emph{exploratory} pipeline on the official corrected release rather than treating the mirror as equivalent. We excluded unlabeled skill records, normalized skill identifiers, ordered each learner's records by numeric \texttt{order\_id}, and used a whole-learner 70/15/15 split with seed 20261024. The enriched PFA retained its same-skill and across-skill history summaries, and the GRU retained prior ordered interactions, seed 42, 25-epoch maximum and validation-based stopping. Both models were refitted exclusively on corrected-source training learners. This is not a fully untouched confirmatory comparison, because the same 2009 academic setting and modeling direction were previously analyzed.
+
+On 625 corrected-source test learners and 48,842 held-out interactions, the enriched PFA achieved ROC-AUC 0.6951, Brier 0.19675, and log loss 0.5809; the GRU achieved ROC-AUC 0.7324, Brier 0.18507, and log loss 0.5512. The paired interaction-weighted Brier difference (GRU minus PFA) was $-0.01168$ (95\% learner-cluster bootstrap percentile interval $[-0.01372,-0.00986]$, 2,000 resamples). The PFA optimizer converged in 930 iterations, and the GRU's best validation epoch was 13. These source-corrected figures are not directly numerically comparable with the 2009 mirror test split because its learner membership and preprocessing differ. The new analysis audits predictive sensitivity; it does not restore mirror/event parity or identify architectural causes. The aggregate code and outputs are archived in GitHub Actions run \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39774414969}{39774414969}.
+
+\section{Independent-Year ASSISTments 2015 Replication}
+\subsection{Frozen sampling sequence and diagnostic correction}
+The first 2015 analysis sampled 5,000 learners with seed 20261022, then assigned learners to 70\%/15\%/15\% train, validation, and test groups, comparing the enriched cross-skill PFA with the extended GRU. Although this initial pilot yielded a nominal GRU Brier advantage, the PFA \texttt{saga} optimizer reached its iteration limit and the declared convergence gate failed. The pilot is archived and \emph{not counted as clean confirmation}. Its test results must not be selectively omitted simply because they are provisional.
+
+Before any second-stage test outcomes were inspected, a corrective protocol changed only the PFA numerical solver to \texttt{lbfgs} (\texttt{C=1}, maximum 2,000 iterations, tolerance $10^{-8}$) for the same regularized logistic model with skill intercepts, within-skill successes/failures, and pooled prior cross-skill successes/failures. It reconstructed and excluded every one of the 5,000 pilot learners, sampled 5,000 different learners (seed 20261023), and created learner-disjoint groups of 3,500 train, 750 validation, and 750 test learners. The GRU configuration remained fixed (seed 42; token embedding 32, skill query embedding 16, hidden size 64, Adam learning rate 0.002, up to 25 epochs, validation patience four). The GRU's best validation epoch was 7 of 11 executed. The enriched PFA optimizer converged in 484 iterations without convergence warnings. No observations from the first sample appear in the second sample.
+
+\subsection{Untouched second-sample results and estimand}
+The primary estimand is the interaction-pooled paired Brier loss difference, GRU minus enriched PFA, on the \emph{second} sample's final holdout. Two thousand learner-cluster bootstrap replicates (seed 20261023) resample whole learners and preserve the pooled-interaction weighting. A directional replication was counted only if the upper 95\% percentile interval endpoint was below zero and all provenance, disjointness, and convergence checks passed. This is a one-sided directional assessment using a displayed two-sided interval, not a preregistered general benchmark claim.
+
+\begin{table}[ht]\centering\small
+\caption{ASSISTments 2015 independent learner-cohort test (750 learners, 26,697 test responses). Higher AUC and lower Brier, log loss and ECE-10 are favorable. The second sample excludes all 5,000 learners from the first diagnostic pilot.}
+\label{tab:cohort2015}
+\begin{tabular}{lrrrr}\toprule
+Model & ROC-AUC & Brier & Log loss & ECE-10\\\midrule
+Enriched PFA (converged) & 0.68129 & 0.18695 & 0.55668 & 0.01694\\
+Extended GRU (seed 42) & 0.69968 & 0.18227 & 0.54346 & 0.00820\\\bottomrule
+\end{tabular}
+\end{table}
+
+The test correctness rate was 0.71697. The primary Brier difference was $-0.0046813$, with a 95\% learner-cluster percentile interval $[-0.0060730,-0.0033457]$. The prespecified \emph{second-stage} computational and directional gates passed, supported by GitHub Actions run \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39754854426}{39754854426}. The first, nonconverged stage and its outcomes remain available in run \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39754046492}{39754046492}. Because both 2015 experiments used the same source archive but \emph{nonoverlapping} learner samples, this is a fresh-sample, distinct-year predictive replication, not a demonstration of cross-institutional transport or strict information matching.
+
+
+\section{2026 Matched-History-Budget Study on a New ASSISTments 2015 Cohort}
+\subsection{Frozen stage-3 design and disjoint history budgets}
+After completing the previous 2015 pilot and disjoint second-stage replication, we froze a separate methodological protocol \emph{before} evaluating a third learner sample (see \href{https://github.com/devissaputra/knowledge_tracing_benchmark/blob/research/kt-methodological-2026-history-budget/METHODOLOGICAL_2026_PROTOCOL.md}{frozen protocol}). The official 2015 source hash remained \texttt{75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0}. Using the original 19,840 eligible learner IDs and the published stage-1 and stage-2 random-seed sampling algorithms, we excluded \emph{all 10,000 learners} selected earlier. From the 9,840 remaining learners, we sampled a third 4,000 with seed 20261026, yielding 138,129 interactions. The learner-disjoint train/validation/test split contained 2,800/600/600 learners (the same seed).
+
+Only responses after a learner's first recorded event are eligible targets, ensuring every evaluated response has at least one observed prior event. Consequently 18 of the 600 test learners contributed no history-eligible target, leaving \textbf{582 evaluable learners and 20,592 common next-response targets}. This distinction required correction of a downstream workflow assertion after the first computational run, with no changes to the model, split, data, features, training seeds or bootstrap. The initial failed release gate and corrected gate are preserved in the public workflow record.
+
+For an event at position $t\geq1$, the permissible input comprises its current skill identifier and only the immediately preceding $\min(K,t)$ observed skill--correctness pairs, for a history budget $K\in\{1,20\}$. The current response is never an input. Count-based and neural models use the \emph{same observable information stream and identical response targets}. Training, validation and test learners remain disjoint; supervised fitting and standardization use training data only. Predictions on held-out learners are sequential online predictions, permitted to condition on \emph{earlier, already observed} responses within that learner. Such history access is not test-label leakage for the current event.
+
+\subsection{Three fixed representations and descriptive estimands}
+\textbf{Window-count PFA+:} Regularized logistic regression ($C=1$) with current-skill indicators and previous correct/incorrect counts for the queried skill and across all skills, computed strictly inside the last-$K$ window. \textbf{Order-aware logistic:} The identical count features plus the most recent prior correctness value, the latest result for the current skill (or absence flag) and lag to that skill within the window, all derivable from the permitted events. Both use LBFGS, standardized numeric features, 1,600-iteration ceiling and recorded convergence warnings. \textbf{Window-GRU:} Last-$K$ skill/outcome tokens enter a 48-unit hidden-state GRU with a separate 12-dimensional current-skill query embedding; token embedding 24, Adam learning rate 0.002, batch 256, up to 12 epochs, patience 3 on validation, seed 42. It sees no additional response history beyond the allowed K. Parameter counts and inductive biases remain unequal, so any gap cannot identify the isolated architecture effect.
+
+Primary descriptive metrics are test Brier score, AUC, log loss and ECE-10. The principal model contrasts are paired \emph{interaction-weighted} GRU-minus-logistic Brier differences, with 2,000 learner-cluster percentile bootstrap resamples. These intervals describe sampling uncertainty conditional on one model fit and test split, without corrections for multiple models or budgets.
+
+\subsection{Real-data results: order-aware logistic reverses the previous model ranking}
+\begin{table}[t]
+\centering\small
+\caption{Same-target Stage-3 test performance at fixed prior-interaction budgets; $n=20{,}592$ responses from 582 evaluable learners at \emph{every} row. Lower Brier/log loss/ECE and higher AUC are better.}
+\label{tab:budgetstudy}
+\begin{tabular}{r l r r r r}
+\toprule
+$K$ & Model & Brier & AUC & Log loss & ECE-10\\
+\midrule
+1 & Window-count PFA+ & 0.17788 & 0.68444 & 0.53459 & 0.00932 \\
+1 & Order-aware logistic & 0.17788 & 0.68444 & 0.53459 & 0.00932 \\
+1 & Window-GRU & 0.18000 & 0.67091 & 0.54066 & 0.00578 \\
+20 & Window-count PFA+ & 0.17667 & 0.69106 & 0.53159 & 0.00613 \\
+20 & Order-aware logistic & 0.17389 & 0.70504 & 0.52409 & 0.00725 \\
+20 & Window-GRU & 0.17514 & 0.69936 & 0.52715 & 0.01166 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[t]
+\centering\includegraphics[width=.88\linewidth]{history_budget_brier.png}
+\caption{Frozen Stage-3 budget sweep with shared train/validation/test learner partitions and exactly matching held-out prediction events. Error intervals for paired model differences are reported in text, not on the points.}
+\label{fig:historybudget}
+\end{figure}
+
+The best single model at both budgets was the \emph{order-aware logistic} model. With only one previous response, count and order-aware models are numerically nearly identical, as expected: the single response already determines the recent-history summary. At 20 prior events, explicit order features improve the logistic Brier score from 0.17667 to 0.17389; the corresponding GRU is 0.17514. Moving from $K=1$ to $K=20$, Brier improves by \textbf{0.00121} for window-count, \textbf{0.00400} for order-aware logistic and \textbf{0.00486} for GRU. The original GRU advantage over standard PFA thus does not universally carry over when a transparent ordered-history comparator is given the same observable response window.
+
+At $K=1$, GRU minus order-aware logistic had pooled Brier difference $+0.002121$ with a 95\% paired learner-cluster bootstrap interval $[+0.001198,+0.003013]$. Relative to window-count PFA+, the corresponding GRU difference was $+0.002121$, interval $[+0.001198,+0.003013]$.
+
+At $K=20$, GRU minus order-aware logistic had pooled Brier difference $+0.001255$ with a 95\% paired learner-cluster bootstrap interval $[+0.000075,+0.002426]$. Relative to window-count PFA+, the corresponding GRU difference was $-0.001533$, interval $[-0.002761,-0.000279]$.
+
+
+
+For the new $K=20$ analysis, all logistic solvers reached numerical convergence without warnings, and the GRU's best validation epoch was 6 (both budgets). The preprocessing hash, nonoverlapping cohort, same-label target identity and numerical sanity gates passed. No family-wise significance claim or empirical generalization beyond the study's single held-out source is made. In particular, these confidence intervals are descriptive, not evidence that ordering \emph{causes} improved learning.
+
+\section{Discussion and Threats to Validity}
+	\textbf{The novel constrained-window result limits the earlier model ranking.} On the newly untouched 2015 cohort, both $K=1$ and $K=20$ evaluations favored an order-aware, interpretable logistic predictor in Brier score over the tested GRU. This contrasts with the earlier, non-information-matched enriched-PFA-versus-GRU comparison, but the new design does not prove that any one architecture is intrinsically better. Conditional on this fixed 2015 sample, performance depends on both the history budget and its representation, and the transparent model benefits particularly from explicit within-window recency and response-order proxies. Its own feature choice confers an inductive advantage, just as the recurrent model's greater capacity can do. A properly optimized AKT baseline, more neural seeds, extra split seeds, and different-year/institutional contexts are needed to assess robustness; none are falsely claimed here.
+
+The 2009 mirror reproductions show an association between the richer sequence representation of the GRU and better test probability scores under the fixed split. The new 2015 experiment provides a separate-year check: on a distinct learner sample, a converged richer PFA remains behind the GRU in the predetermined directional Brier comparison. This is stronger evidence for repeatability of the \emph{observed predictive direction} than the 2009 reanalysis alone, but cannot isolate recurrent architecture from feature history, ordered signals, capacity, data processing, or optimization.
+
+\textbf{Source equivalence and chronological assumptions.} The official maintainers identify duplicated rows in an earlier 2009--2010 skill-builder source and provide a corrected student--problem representation \citep{assistmentsdata}. Our independently executed direct source comparison disproves strict equality between that corrected release and the Atomi mirror: 817 shared learner sequences differ and the mirror is shorter by 8,774 skill-labeled responses. The mirror retains user/skill/grade sequences, but lacks the original problem/event IDs and verified timestamps needed to attribute the differences or reconstruct a complete raw-event crosswalk. The 2009 benchmark results therefore \emph{remain mirror-specific}; the 2015 experiment is a separate-year check and does not repair this mismatch. The 2015 file has event-log identifiers and a different skill-builder code definition. Ordering by \texttt{log\_id} is an explicitly documented modeling convention, not proof that the measure captures every physical action time correctly.
+
+\textbf{Pilot and numerical-selection transparency.} The first 2015 run did not pass the PFA convergence gate. The second-stage design and LBFGS replacement were frozen only after that failure had been observed; disjoint learners prevent direct sample reuse but do not turn the stage-2 plan into prospective preregistration. Reporting both stages prevents a misleading impression of a single perfect untouched evaluation. The 2015 results reflect one second-stage sample and seed, not many external sites or extensive split-seed sensitivity analysis.
+
+\textbf{Information and attribution.} The enriched PFA uses compressed aggregate per-skill and across-skill histories; the GRU uses ordered prior interactions and a different parameter budget. Its superiority cannot be assigned specifically to recurrence. Existing correction-aware, cross-cohort, and information-controlled comparisons \citep{polydoros2026,padi2026} further constrain claims of novelty or state-of-the-art ranking.
+
+\textbf{Uncertainty and target populations.} The 2009 original bootstrap treats the learner-average Brier contrast; the extended 2009 and new 2015 paired bootstraps target the interaction-pooled contrast and resample learners. The interval for the second 2015 cohort is conditional on its sampled learners, fixed model choices, and event selection rules, and cannot substitute for multi-institutional validation. The new cohort concerns only the source's 100 most-used skill builders, not all learners or curricula. \textbf{Educational interpretation.} Neither dataset supplies a randomized teaching intervention; predictive skill probabilities are not a direct measure of learning benefit, fairness, or readiness for consequential student decisions.
+
+\section{Research Questions Revisited}
+	extbf{RQ6 (matched history budget):} The previously observed neural Brier advantage does not persist against the order-aware logistic comparator on the third 2015 learner cohort. At both one and 20 prior interactions, this transparent predictor scores a lower Brier loss on identical held-out targets, while all models improve with 20 events. This is a narrow, source- and protocol-conditional model-ranking observation.
+
+\textbf{RQ1:} The six-model baseline reproduces on the fixed mirror, conditional on its source transformation. \textbf{RQ2:} First within-learner skill occurrences and repetitions differ descriptively, but are not directly comparable learning stages. \textbf{RQ3:} Learner-averaged and interaction-pooled Brier targets differ; their bootstrap intervals must be labeled accordingly. \textbf{RQ4:} The exploratory 2009 GRU/PFA contrast persisted with extended training and richer classical history, but on inspected learners. \textbf{RQ5 (external replication):} The directional interaction-pooled Brier advantage replicated on 750 untouched held-out 2015 learners in a separately fixed, converged corrective-stage evaluation, with the limitations above. \textbf{RQ6 (corrected 2009 source):} Direct event-level audit refuted full equivalence with the transformed mirror, but a separate, exploratory analysis of the corrected raw source reproduced the direction of the predictive Brier difference on 625 held-out learners.
+
+\section{Conclusion}
+The empirical contribution of this study is not a new KT architecture or a claim that old GRU models dominate PFA. Instead, it exposes three measurable evaluation dependencies: (i) the common 2009 transformed mirror is not exactly identical to the corrected official event source; (ii) a recurrent predictor can appear stronger when compared with a baseline supplied with a coarser summary of learner history; and (iii) on a new, explicitly disjoint 2015 sample, holding available history and prediction targets fixed permits an interpretable order-aware logistic model to outperform a GRU in probability accuracy at both one and 20 previous responses. Increasing available history improved all three tested representations. The disagreement with earlier non-information-matched comparisons supports \emph{conditional, representation-aware benchmarking} rather than universal model rankings. The study does not establish effects on education, prove recurrence is useless, or claim to invent information parity or historical source correction. Multiple split seeds, neural seeds, modern baselines and additional contemporary datasets remain important follow-ups before stronger generalization claims.
+
+\section*{Data availability and research integrity}
+The official 2009 correction notice is at \url{https://sites.google.com/site/assistmentsdata/home/2009-2010-assistment-data/skill-builder-data-2009-2010}, and the 2015 source at \url{https://sites.google.com/site/assistmentsdata/datasets/2015-assistments-skill-builder-data}. The 2009 pinned Atomi mirror and source SHA-256 are recorded in \url{https://github.com/devissaputra/knowledge_tracing_benchmark}. The re-execution of the 2009 frozen experiment appears in GitHub Actions run \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39655888620}{39655888620}. The first 2015 diagnostic pilot and final disjoint-cohort execution are in runs \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39754046492}{39754046492} and \href{https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/39754854426}{39754854426}, respectively. The frozen 2015 protocols, exact SHA-256, implementation and JSON results are in \url{https://github.com/devissaputra/knowledge_tracing_benchmark/pull/2}; the original exploratory extension is in \url{https://github.com/devissaputra/knowledge_tracing_benchmark/pull/1}. Raw individual learner records are not redistributed. The new Stage-3 results were independently executed in GitHub Actions with strict source/cohort checks and de-identified aggregate evidence; one release assertion about split learners versus evaluable learners was corrected without model retuning. External peer review and author approval are not claimed. Full Stage-3 evidence: \url{https://github.com/devissaputra/knowledge_tracing_benchmark/tree/research/kt-methodological-2026-history-budget/results}. Strict whole-dataset 2009 corrected-source parity was directly tested and disproved by necessary event-count and sequence-equality checks.
+
+\section*{Limitations of authorship and interpretation}
+This is a research manuscript prepared for author verification. The named author must personally verify the calculations, code, references, and contribution statements before submission. The text makes no claim of peer review or acceptance. Draft preparation and some analytical implementation involved generative AI assistance; any submitted version requires the named author's personal audit and approval of the methods, empirical provenance, interpretations, and disclosure in accordance with the destination archive's applicable policies.
+
+\begingroup\small
+\setlength{\itemsep}{0pt}
+\begin{thebibliography}{99}
+\bibitem[Abdelrahman et al.(2023)]{abdelrahman2023} Abdelrahman, G., Wang, Q., and Nunes, B. (2023). Knowledge tracing: A survey. \emph{ACM Computing Surveys}, 55(11), Article 224. \url{https://doi.org/10.1145/3569576}.
+\bibitem[Corbett and Anderson(1995)]{corbett1995} Corbett, A. T. and Anderson, J. R. (1995). Knowledge tracing: Modeling the acquisition of procedural knowledge. \emph{User Modeling and User-Adapted Interaction}, 4, 253--278. \url{https://doi.org/10.1007/BF01099821}.
+\bibitem[Feng et al.(2009)]{feng2009} Feng, M., Heffernan, N. T., and Koedinger, K. R. (2009). Addressing the assessment challenge with an online system that tutors as it assesses. \emph{User Modeling and User-Adapted Interaction}, 19(3), 243--266. \url{https://doi.org/10.1007/s11257-009-9063-7}.
+\bibitem[Gervet et al.(2020)]{gervet2020} Gervet, T., Koedinger, K., Schneider, J., and Mitchell, T. (2020). When is deep learning the best approach to knowledge tracing? \emph{Journal of Educational Data Mining}, 12(3), 31--54. \url{https://doi.org/10.5281/zenodo.4143614}.
+\bibitem[Polydoros(2026)]{polydoros2026} Polydoros, G. (2026). Cross-Cohort Knowledge-Tracing Benchmark: ASSISTments 2009--2010 and 2015 Replication Package (v2.0.1, corrected statistical reporting). Zenodo software. \url{https://doi.org/10.5281/zenodo.22131530}.
+\bibitem[Badran and Preisach(2026)]{badran2026} Badran, Y. and Preisach, C. (2026). Enhancing knowledge tracing through leakage-free and recency-aware embeddings. \emph{SN Computer Science}, 7, article 774. \url{https://doi.org/10.1007/s42979-026-05344-3}.
+\bibitem[Padi et al.(2026)]{padi2026} Padi, P., Morampudi, A., Irrinki, U. S. G., and Kakitapelli, P. K. D. (2026). Stable and faithful explanations for knowledge tracing. arXiv:2609.28502. \url{https://arxiv.org/abs/2609.28502}.
+\bibitem[Pavlik et al.(2009)]{pavlik2009} Pavlik, P. I., Cen, H., and Koedinger, K. R. (2009). Performance factors analysis: A new alternative to knowledge tracing. \emph{Proceedings of AIED}, 531--538. \url{https://doi.org/10.3233/978-1-60750-028-5-531}.
+\bibitem[Piech et al.(2015)]{piech2015} Piech, C., Bassen, J., Huang, J., Ganguli, S., Sahami, M., Guibas, L., and Sohl-Dickstein, J. (2015). Deep knowledge tracing. \emph{NeurIPS 28}. \url{https://arxiv.org/abs/1506.05908}.
+\bibitem[ASSISTmentsData(2015)]{assistments2015} ASSISTmentsData (2015). 2015 ASSISTments Skill Builder Data, original dataset portal (100 skill builders). \url{https://sites.google.com/site/assistmentsdata/datasets/2015-assistments-skill-builder-data}.
+\bibitem[ASSISTmentsData(n.d.)]{assistmentsdata} ASSISTmentsData (n.d.). Skill-builder data 2009--2010, correction notice and official data. \url{https://sites.google.com/site/assistmentsdata/home/2009-2010-assistment-data/skill-builder-data-2009-2010}.
+\end{thebibliography}
+\endgroup
+\end{document}
