@@ -1,0 +1,70 @@
+name: "Paper 1 - 2026 matched-history-budget experiment"
+on:
+  push:
+    branches:
+      - research/kt-methodological-2026-history-budget
+    paths:
+      - METHODOLOGICAL_2026_PROTOCOL.md
+      - scripts/matched_history_budget_2026.py
+      - .github/workflows/matched-history-budget-2026.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  matched-budget:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned scientific stack
+        run: |
+          python -m pip install -r requirements-repro.txt
+          python -m pip install 'gdown>=5.2,<6'
+      - name: Code compilation and causal prefix smoke checks
+        run: |
+          python -m py_compile scripts/matched_history_budget_2026.py
+          PYTHONPATH=src python scripts/matched_history_budget_2026.py --smoke
+      - name: Execute same-target independent-cohort budget comparison
+        run: PYTHONPATH=src python -u scripts/matched_history_budget_2026.py
+      - name: Validate learner and calculation invariants
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open("results/matched_history_budget_2026.json"))
+          assert a["status"]=="passed_all_computational_gates",a.get("diagnostic_failures")
+          assert a["source"]["source_sha256"]=="75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0"
+          assert a["source"]["cohort_overlap_previous"]==0
+          assert a["source"]["stage3_learners"]==4000
+          assert a["design"]["test_learners"]==600
+          assert set(a["comparisons"])=={"1","20"}
+          for b in a["comparisons"].values():
+            assert set(b["models"])=={"window_count","ordered_logistic","window_gru"}
+            for x in b["models"].values():
+              assert 0<x["brier"]<1 and x["n"]>10000
+            for x in b["paired_GRU_minus"].values():
+              assert x["n_learners"]==600 and x["n_bootstrap"]==2000
+          print("Verified fresh learner cohort and history-parity output gates.")
+          PY
+      - name: Upload aggregate evidence even if a research gate fails
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matched-history-budget-2026-aggregate
+          path: results/matched_history_budget_2026.json
+          if-no-files-found: warn
+      - name: Archive de-identified aggregate results
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/matched_history_budget_2026.json
+          if ! git diff --cached --quiet; then
+            git commit -m "research: archive matched-history budget empirical results"
+            git push origin HEAD:research/kt-methodological-2026-history-budget
+          fi
