@@ -1,0 +1,58 @@
+{
+  "provenance": {
+    "corrected_original_sha256": "162ef8d2d28bcbfea6591a282994062bd8d5eaa00636544292a0d268dca6e5da",
+    "pinned_mirror_sha256": "2053b7ea63f1d5ea953834bf82ed89543e1f11bae1e3e7535c2f9d7f49d4dda7",
+    "mirror_revision": "c72a664a9693547fb206652ed2ce18e62d320c7d",
+    "official_file_id": "1NNXHFRxcArrU0ZJSb9BIL56vmUt5FhlE"
+  },
+  "official": {
+    "original_rows": 346860,
+    "binary_valid": 346860,
+    "labeled_rows": 283105,
+    "n_unique_learners": 4163
+  },
+  "mirror": {
+    "serialized_learners": 4148,
+    "interactions": 274331
+  },
+  "comparison": {
+    "shared_learners": 4148,
+    "official_only": 15,
+    "mirror_only": 0,
+    "same_event_counts": 3331,
+    "same_skill_response_multisets": 3331,
+    "same_native_file_order": 1441,
+    "same_numeric_order": 3331,
+    "different_shared_sequences": 817
+  },
+  "scientific_scope": "Fails exact parity; source has event IDs that transformed mirror does not. No proof of complete learner-event identity.",
+  "matches_original_aggregate": true,
+  "expected": [
+    346860,
+    346860,
+    283105,
+    4163,
+    4148,
+    274331,
+    4148,
+    3331,
+    3331,
+    1441,
+    3331,
+    817
+  ],
+  "observed": [
+    346860,
+    346860,
+    283105,
+    4163,
+    4148,
+    274331,
+    4148,
+    3331,
+    3331,
+    1441,
+    3331,
+    817
+  ]
+}
