@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "scope": "independent source-corrected 2009 exploratory computational reproduction",
+  "data": {
+    "official_sha256": "162ef8d2d28bcbfea6591a282994062bd8d5eaa00636544292a0d268dca6e5da",
+    "original_rows": 346860,
+    "labeled_events": 283105,
+    "learner_count": 4163,
+    "train": 2914,
+    "validation": 624,
+    "test": 625,
+    "test_interactions": 48842
+  },
+  "protocol": {
+    "split_seed": 20261024,
+    "gru_seed": 42,
+    "max_gru_epochs": 25,
+    "gru_patience": 4,
+    "bootstrap_draws": 2000,
+    "resampling_unit": "learner"
+  },
+  "training": {
+    "logistic": {
+      "solver": "lbfgs",
+      "iterations": 875
+    },
+    "gru": {
+      "gru_best_epoch": 13,
+      "epochs_completed": 17,
+      "gru_training_last_validation": 0.5575642922807643,
+      "vocabulary": 149
+    }
+  },
+  "metrics": {
+    "enriched_pfa": {
+      "n": 48842,
+      "positive_rate": 0.670713729986487,
+      "brier": 0.19675493792818474,
+      "log_loss": 0.5808620079043022,
+      "roc_auc": 0.6950809927537956,
+      "average_precision": 0.8007166528860443
+    },
+    "extended_gru": {
+      "n": 48842,
+      "positive_rate": 0.670713729986487,
+      "brier": 0.1850738090876879,
+      "log_loss": 0.5512403248885941,
+      "roc_auc": 0.7324336823753064,
+      "average_precision": 0.8298661259976234
+    }
+  },
+  "paired": {
+    "gru_minus_pfa": -0.011681128840496904,
+    "percentile_interval": [
+      -0.013718001162253215,
+      -0.009862460331839892
+    ],
+    "n_learners": 625,
+    "n_events": 48842,
+    "bootstrap_draws": 2000
+  },
+  "deviations_from_original": {
+    "enriched_pfa": {
+      "brier": 5.796807783786662e-09
+    },
+    "extended_gru": {
+      "brier": -2.585990865888732e-10
+    }
+  },
+  "concordance": {
+    "pfa_brier": true,
+    "gru_brier": true,
+    "pfa_auc": true,
+    "gru_auc": true,
+    "delta_brier": true,
+    "ci_lower": true,
+    "ci_upper": true
+  },
+  "environment": {
+    "python": "3.11.17",
+    "pandas": "2.3.3",
+    "numpy": "2.4.6",
+    "sklearn": "1.9.1",
+    "torch": "2.14.0+cu130"
+  },
+  "interpretation": "Independent computational reproduction of an exploratory comparison; does not establish causal architecture effects or untouched confirmation."
+}
