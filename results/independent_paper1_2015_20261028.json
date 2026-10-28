@@ -1,0 +1,248 @@
+{
+  "date_utc": "2026-10-28T16:17:01.332934+00:00",
+  "purpose": "independent reimplementation of fixed 2015 experiment",
+  "data": {
+    "sha256": "75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0",
+    "raw_rows": 708631,
+    "excluded_invalid": 24830,
+    "eligible_learners": 19840,
+    "prior_1_excluded": 5000,
+    "prior_2_excluded": 5000,
+    "unused_pool": 9840,
+    "new_learners": 4000,
+    "new_interactions": 138129,
+    "previous_overlap": 0,
+    "cohort_id_sha256": "0d9bef7d4d9d9ce4064eb63a04e7bba488ae72cd919bd7730bccd9bdecbb19f1",
+    "train": 2800,
+    "validation": 600,
+    "test": 600
+  },
+  "environment": {
+    "python": "3.11.17",
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "sklearn": "1.9.1",
+    "torch": "2.14.0+cu130"
+  },
+  "windows": {
+    "1": {
+      "metrics": {
+        "window_count": {
+          "n": 20592,
+          "brier": 0.17788198622608897,
+          "positive_rate": 0.7369366744366744
+        },
+        "ordered_logistic": {
+          "n": 20592,
+          "brier": 0.1778819759712638,
+          "positive_rate": 0.7369366744366744
+        },
+        "window_gru": {
+          "n": 20592,
+          "brier": 0.18000310876583983,
+          "positive_rate": 0.7369366744366744
+        }
+      },
+      "bootstraps": {
+        "window_count": {
+          "difference": 0.0021211225397508473,
+          "ci_95": [
+            0.0011984117387690849,
+            0.0030133516651532225
+          ],
+          "bootstrap_draws": 2000,
+          "evaluable_learners": 582,
+          "targets": 20592
+        },
+        "ordered_logistic": {
+          "difference": 0.0021211327945760395,
+          "ci_95": [
+            0.0011983111953911593,
+            0.003013430521830829
+          ],
+          "bootstrap_draws": 2000,
+          "evaluable_learners": 582,
+          "targets": 20592
+        }
+      },
+      "gru_training": {
+        "best_epoch": 6,
+        "epochs_completed": 9,
+        "history": [
+          {
+            "epoch": 1,
+            "train_bce": 0.5700001581768676,
+            "validation_bce": 0.5546365735704056
+          },
+          {
+            "epoch": 2,
+            "train_bce": 0.5496423452632586,
+            "validation_bce": 0.5503481281200234
+          },
+          {
+            "epoch": 3,
+            "train_bce": 0.5454335748910715,
+            "validation_bce": 0.547162387495068
+          },
+          {
+            "epoch": 4,
+            "train_bce": 0.5431627398730218,
+            "validation_bce": 0.547476077152682
+          },
+          {
+            "epoch": 5,
+            "train_bce": 0.5419399414966809,
+            "validation_bce": 0.5466526810471217
+          },
+          {
+            "epoch": 6,
+            "train_bce": 0.5412652808863045,
+            "validation_bce": 0.5449585088872168
+          },
+          {
+            "epoch": 7,
+            "train_bce": 0.5408221123226856,
+            "validation_bce": 0.5450970626447612
+          },
+          {
+            "epoch": 8,
+            "train_bce": 0.5403140304334243,
+            "validation_bce": 0.5456032755835954
+          },
+          {
+            "epoch": 9,
+            "train_bce": 0.5400628736655948,
+            "validation_bce": 0.5456161297604728
+          }
+        ]
+      },
+      "logistic_iterations": {
+        "window_count": 293,
+        "ordered_logistic": 405
+      },
+      "target_stream_sha256": "af141173cd7f2129a633b973153040c947e496aee7bd14943a1daf504259c205",
+      "test_evaluable_learners": 582,
+      "baseline_brier_deltas": {
+        "window_count": -5.810743497480786e-09,
+        "ordered_logistic": -2.387163022810057e-09,
+        "window_gru": -7.193134976546389e-12
+      },
+      "brier_concordance_with_original": {
+        "window_count": true,
+        "ordered_logistic": true,
+        "window_gru": true
+      }
+    },
+    "20": {
+      "metrics": {
+        "window_count": {
+          "n": 20592,
+          "brier": 0.17667353599870755,
+          "positive_rate": 0.7369366744366744
+        },
+        "ordered_logistic": {
+          "n": 20592,
+          "brier": 0.1738853534054858,
+          "positive_rate": 0.7369366744366744
+        },
+        "window_gru": {
+          "n": 20592,
+          "brier": 0.17514020581033868,
+          "positive_rate": 0.7369366744366744
+        }
+      },
+      "bootstraps": {
+        "window_count": {
+          "difference": -0.0015333301883688854,
+          "ci_95": [
+            -0.002760564823987015,
+            -0.0002792945143307466
+          ],
+          "bootstrap_draws": 2000,
+          "evaluable_learners": 582,
+          "targets": 20592
+        },
+        "ordered_logistic": {
+          "difference": 0.001254852404852878,
+          "ci_95": [
+            7.534992026458757e-05,
+            0.002425949006528458
+          ],
+          "bootstrap_draws": 2000,
+          "evaluable_learners": 582,
+          "targets": 20592
+        }
+      },
+      "gru_training": {
+        "best_epoch": 6,
+        "epochs_completed": 9,
+        "history": [
+          {
+            "epoch": 1,
+            "train_bce": 0.5622161607446488,
+            "validation_bce": 0.5460942477502055
+          },
+          {
+            "epoch": 2,
+            "train_bce": 0.536003400421458,
+            "validation_bce": 0.5368350825958941
+          },
+          {
+            "epoch": 3,
+            "train_bce": 0.5258215120835353,
+            "validation_bce": 0.5301942911593113
+          },
+          {
+            "epoch": 4,
+            "train_bce": 0.5190114409156998,
+            "validation_bce": 0.5288743169830165
+          },
+          {
+            "epoch": 5,
+            "train_bce": 0.5149992863454589,
+            "validation_bce": 0.5286781249708553
+          },
+          {
+            "epoch": 6,
+            "train_bce": 0.5117375195438538,
+            "validation_bce": 0.5277301270373391
+          },
+          {
+            "epoch": 7,
+            "train_bce": 0.5087343529247965,
+            "validation_bce": 0.5304507150476229
+          },
+          {
+            "epoch": 8,
+            "train_bce": 0.5056064735710554,
+            "validation_bce": 0.5304346914720774
+          },
+          {
+            "epoch": 9,
+            "train_bce": 0.5025589430878046,
+            "validation_bce": 0.5334981984356196
+          }
+        ]
+      },
+      "logistic_iterations": {
+        "window_count": 309,
+        "ordered_logistic": 353
+      },
+      "target_stream_sha256": "af141173cd7f2129a633b973153040c947e496aee7bd14943a1daf504259c205",
+      "test_evaluable_learners": 582,
+      "baseline_brier_deltas": {
+        "window_count": -1.1191605697735696e-09,
+        "ordered_logistic": 4.214807475255711e-09,
+        "window_gru": -3.213940780177893e-10
+      },
+      "brier_concordance_with_original": {
+        "window_count": true,
+        "ordered_logistic": true,
+        "window_gru": true
+      }
+    }
+  },
+  "targets_identical_across_k": true,
+  "same_test_counts": true,
+  "overall_reproduced": true
+}
