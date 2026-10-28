@@ -1,0 +1,53 @@
+name: "Independent Paper 1 corrected-source 2009 robustness reproduction"
+on:
+  push:
+    branches:
+      - research/independent-2009-robustness-20261028
+    paths:
+      - verification/independent_corrected_2009_robustness.py
+      - .github/workflows/independent-corrected-2009-robustness.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependency pins
+        run: |
+          python -m pip install -r requirements-repro.txt
+          python -m pip install 'gdown>=5.2,<6'
+      - name: Verify standalone implementation
+        run: |
+          python -m py_compile verification/independent_corrected_2009_robustness.py
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('verification/independent_corrected_2009_robustness.py').read_text()
+          for forbidden in ('import run_experiment', 'import robustness_extension', 'import corrected_2009_reanalysis', 'from knowledge_tracing_benchmark'):
+            assert forbidden not in s,forbidden
+          print('PASS: source implementation does not import original model methods')
+          PY
+      - name: Download official corrected 2009 and rerun model fits from raw bytes
+        run: python -u verification/independent_corrected_2009_robustness.py
+      - name: Retain independent aggregate result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper1-independent-corrected-2009-robustness
+          path: results/independent_corrected_2009_robustness_20261028.json
+          if-no-files-found: warn
+      - name: Commit verified public aggregate result
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/independent_corrected_2009_robustness_20261028.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'verification: preserve independently reproduced 2009 PFA GRU aggregate'
+            git push origin HEAD:research/independent-2009-robustness-20261028
+          fi
