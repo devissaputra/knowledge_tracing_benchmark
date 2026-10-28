@@ -1,0 +1,50 @@
+name: "INDEPENDENT Paper 1 corrected 2009 provenance test"
+on:
+  push:
+    branches:
+      - research/independent-paper1-provenance-20261028
+    paths:
+      - verification/independent_paper1_2009_provenance.py
+      - .github/workflows/independent-paper1-provenance-20261028.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  source-provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install independent source readers
+        run: python -m pip install 'pandas==2.3.3' 'pyarrow==23.0.1' 'huggingface-hub==1.33.0' 'gdown>=5.2,<6'
+      - name: Confirm independent implementation
+        run: |
+          python -m py_compile verification/independent_paper1_2009_provenance.py
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('verification/independent_paper1_2009_provenance.py').read_text()
+          assert 'import audit_corrected_2009' not in s
+          assert 'import run_experiment' not in s
+          print('PASS: independent provenance implementation')
+          PY
+      - name: Independently download, hash and compare official 2009 and pinned mirror
+        run: python -u verification/independent_paper1_2009_provenance.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper1-2009-independent-source-provenance
+          path: results/independent_paper1_2009_provenance_20261028.json
+          if-no-files-found: warn
+      - name: Archive aggregate-only independent source findings
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/independent_paper1_2009_provenance_20261028.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'verification: archive independent corrected 2009 source audit'
+            git push origin HEAD:research/independent-paper1-provenance-20261028
+          fi
