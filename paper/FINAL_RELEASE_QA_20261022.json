@@ -1,0 +1,313 @@
+{
+  "date": "2026-10-22",
+  "scope": "final submitted-ready *candidate*, computational and document QA, not scholarly peer review",
+  "checks_passed": 60,
+  "checks_total": 60,
+  "checks_failed": 0,
+  "paper_pages": 11,
+  "pdf_sha256": "e51ffe070954cfd71f7577839a6e615f7404d959ca0a7e0628a2863abe48da59",
+  "arxiv_source_sha256": "06653b400cb87e5d856124e581511b3536af4c242df62ceba2d52f1956462698",
+  "scientific_disposition": "Narrow preprint candidate pending named author verification and submission; source discrepancy honestly reported.",
+  "checks": [
+    {
+      "name": "Archive ZIP file exists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Source ZIP integrity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Exactly four production sources",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No unpublished data or research manifests inside arXiv archive",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No PDF and no TeX build artifacts inside source archive",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No hidden files",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "main.tex present and stable against prepared source",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Only expected figures included",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Archive <1MB",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Clean-room LaTeX build 1",
+      "pass": true,
+      "detail": "compiles"
+    },
+    {
+      "name": "Clean-room LaTeX build 2",
+      "pass": true,
+      "detail": "compiles"
+    },
+    {
+      "name": "No overfull box warnings",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No undefined reference warning",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No undefined citation warning",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Freshly compiled PDF exists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Fresh PDF has 11 pages",
+      "pass": true,
+      "detail": "11"
+    },
+    {
+      "name": "Every fresh PDF page has extracted text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Rebuilt PDF contains corrected 2009 finding",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Rebuilt PDF text contains 2015 sample",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "PDF not encrypted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Distributed manuscript PDF exists",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Distributed PDF is 11 pages",
+      "pass": true,
+      "detail": "11"
+    },
+    {
+      "name": "Distributed PDF selectable text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Original mirror count recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected official count recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected source learner count recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Direct parity discrepancy 817 recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Direct parity agreement 3331 recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected official split test learner count recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Official 2009 Brier scores recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Official 2009 confidence bounds recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2015 Brier difference recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2015 sample 750 recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "2015 bootstrap confidence bounds recorded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Paper says not peer reviewed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Statement of authorship review requirement",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No novelty-overclaim flag",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "No blank FIXME markers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "LaTeX uses fixed date, not mutable today",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Three figures referenced",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Verified corrected-source hash consistent",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected source parity disproved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Official file learner count",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Mirror file learner count",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Mirror and official overlap",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Cross-dataset sequence equality 3331",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Cross-dataset sequence discrepancy 817",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected-source exploratory status",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "PFA converged without warnings",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected-source GRU is lower Brier on observed data",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected-source bootstrap draws",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected-source interval favoring GRU",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Corrected 2009 no causal language overstated",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "GitHub full source audit link",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "GitHub corrected official model run link",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "GitHub fresh 2015 model run link",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "arXiv abstract metadata character limit",
+      "pass": true,
+      "detail": "1267"
+    },
+    {
+      "name": "Author arXiv submission steps documented",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Author approval remains explicit",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "External peer review not fabricated",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "status": "completed_exploratory_corrected_source",
+  "analysis_type": "exploratory source-sensitivity, not confirmatory",
+  "source": {
+    "corrected_sha256": "162ef8d2d28bcbfea6591a282994062bd8d5eaa00636544292a0d268dca6e5da",
+    "original_source_rows": 346860,
+    "labeled_rows": 283105,
+    "excluded_unlabeled_or_invalid": 63755,
+    "learner_count": 4163,
+    "chronology": "numeric order_id; source-identified sequence order"
+  },
+  "protocol": {
+    "split_seed": 20261024,
+    "gru_seed": 42,
+    "train_learners": 2914,
+    "validation_learners": 624,
+    "test_learners": 625,
+    "pfa_solver": "lbfgs",
+    "pfa_C": 1.0,
+    "pfa_max_iter": 2000,
+    "pfa_tol": 1e-08,
+    "gru_max_epochs": 25,
+    "gru_patience": 4,
+    "bootstrap_resamples": 2000,
+    "bootstrap_seed": 20261024
+  },
+  "pfa_convergence_warnings": [],
+  "pfa_iterations": 930,
+  "gru_epochs_completed": 17,
+  "gru_best_epoch": 13,
+  "metrics": {
+    "enriched_pfa": {
+      "n": 48842,
+      "positive_rate": 0.670713729986487,
+      "brier": 0.19675493213137696,
+      "log_loss": 0.580861994297318,
+      "average_precision": 0.8007165977950836,
+      "ece_10": 0.021130927665680675,
+      "roc_auc": 0.6950809111386503
+    },
+    "extended_gru": {
+      "n": 48842,
+      "positive_rate": 0.670713729986487,
+      "brier": 0.18507380934628698,
+      "log_loss": 0.5512403251511567,
+      "average_precision": 0.8298660557243271,
+      "ece_10": 0.010919003540782643,
+      "roc_auc": 0.7324336482108271
+    }
+  },
+  "paired_brier": {
+    "difference_candidate_minus_reference": -0.011681122785090007,
+    "bootstrap_95_interval": [
+      -0.013717998422616664,
+      -0.009862452037847193
+    ],
+    "resampling_unit": "learner",
+    "estimand_unit": "interaction",
+    "n_learners": 625,
+    "n_interactions": 48842,
+    "n_bootstrap": 2000
+  },
+  "interpretation": "Numbers are conditional on corrected source and selected splitting/representation. This is not a new untouched 2009 holdout or causal architecture effect."
+}

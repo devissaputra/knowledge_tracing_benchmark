@@ -1,0 +1,73 @@
+{
+  "status": "completed_with_unresolved_diagnostics",
+  "directional_replication_confirmed": false,
+  "test_is_external_cohort_not_prior_2009_test": true,
+  "source_integrity_scope": "Official-source URL/id and downloaded-byte SHA; no independent publisher checksum available",
+  "data": {
+    "official_portal": "https://sites.google.com/site/assistmentsdata/datasets/2015-assistments-skill-builder-data",
+    "official_linked_drive_file_id": "0B_hO8cnpcIMgUGZzRnh3bHJrSjQ",
+    "raw_filename": "assistments_2015_official.csv",
+    "source_sha256": "75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0",
+    "source_total_rows": 708631,
+    "excluded_invalid_rows": 24830,
+    "source_unique_eligible_learners": 19840,
+    "sample_seed": 20261022,
+    "sample_learners": 5000,
+    "sample_interactions": 170889,
+    "chronology": "ascending log_id within user_id",
+    "concept": "sequence_id (skill builder; not 2009 mirror skill_id)"
+  },
+  "protocol": {
+    "sample_learners": 5000,
+    "sample_seed": 20261022,
+    "split_seed": 20261022,
+    "train_learners": 3500,
+    "validation_learners": 750,
+    "test_learners": 750,
+    "gru_seed": 42,
+    "gru_max_epochs": 25,
+    "gru_patience": 4,
+    "bootstrap_seed": 20261022,
+    "bootstrap_draws": 2000,
+    "predeclared_primary_estimand": "GRU - enhanced PFA pooled interaction-weighted Brier",
+    "directional_rule": "Upper endpoint of 95% percentile learner-cluster bootstrap CI < 0; must pass diagnostic gates"
+  },
+  "metrics": {
+    "enriched_pfa": {
+      "n": 25089,
+      "positive_rate": 0.7285264458527642,
+      "brier": 0.18141712741703564,
+      "log_loss": 0.5433839611564283,
+      "average_precision": 0.8427901868527623,
+      "ece_10": 0.015065578937170483,
+      "roc_auc": 0.6895656527695257
+    },
+    "extended_gru": {
+      "n": 25089,
+      "positive_rate": 0.7285264458527642,
+      "brier": 0.17643847175634333,
+      "log_loss": 0.529606322036061,
+      "average_precision": 0.8597931958258713,
+      "ece_10": 0.014323575497811158,
+      "roc_auc": 0.7077904092022121
+    }
+  },
+  "brier_comparison": {
+    "difference_candidate_minus_reference": -0.004978655660692301,
+    "bootstrap_95_interval": [
+      -0.0069731289320504345,
+      -0.0033563705430400648
+    ],
+    "resampling_unit": "learner",
+    "estimand_unit": "interaction",
+    "n_learners": 750,
+    "n_interactions": 25089,
+    "n_bootstrap": 2000
+  },
+  "gru_best_validation_epoch": 9,
+  "gru_epochs_completed": 13,
+  "pfa_convergence_warnings": [
+    "The max_iter was reached which means the coef_ did not converge"
+  ],
+  "conclusion_scope": "Different-year ASSISTments learner-subset replication. Not source parity for 2009 and not a causal attribution of architecture."
+}

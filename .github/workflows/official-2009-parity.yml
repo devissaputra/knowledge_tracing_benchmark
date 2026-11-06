@@ -1,0 +1,52 @@
+name: "Audit corrected official ASSISTments 2009 against pinned third-party mirror"
+on:
+  push:
+    branches:
+      - research/kt-fresh-cohort-20261022
+    paths:
+      - scripts/audit_corrected_2009.py
+      - .github/workflows/official-2009-parity.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  source-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source-audit dependencies
+        run: |
+          python -m pip install 'pandas==2.3.3' 'pyarrow==23.0.1' 'huggingface-hub==1.33.0' 'gdown>=5.2,<6'
+      - name: Verify audit script syntax
+        run: python -m py_compile scripts/audit_corrected_2009.py
+      - name: Compare official corrected raw records against pinned mirror
+        run: python scripts/audit_corrected_2009.py
+      - name: Verify audit records uncertainty explicitly
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('results/official_2009_mirror_parity_audit.json').read_text())
+          assert r['parity_status'] in ('blocked_not_established','exact_full_dataset_parity_disproved_by_necessary_conditions','aggregate_necessary_conditions_pass_but_event_parity_not_proven')
+          assert 'student_records' not in r
+          print('SOURCE AUDIT STATUS:',r['parity_status'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-2009-mirror-parity-metadata-only
+          path: results/official_2009_mirror_parity_audit.json
+      - name: Preserve report in research branch
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/official_2009_mirror_parity_audit.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: archive corrected 2009 versus mirror provenance audit'
+            git push origin HEAD:research/kt-fresh-cohort-20261022
+          fi

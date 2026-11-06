@@ -1,0 +1,40 @@
+{
+  "source": {
+    "official_documentation_url": "https://sites.google.com/site/assistmentsdata/home/2009-2010-assistment-data/skill-builder-data-2009-2010",
+    "official_corrected_drive_id": "1NNXHFRxcArrU0ZJSb9BIL56vmUt5FhlE",
+    "corrected_file_sha256": "162ef8d2d28bcbfea6591a282994062bd8d5eaa00636544292a0d268dca6e5da",
+    "corrected_file_bytes": 64412812,
+    "source_columns": [
+      "user_id",
+      "skill_id",
+      "correct",
+      "order_id"
+    ],
+    "corrected_source_records_total": 346860,
+    "records_valid_binary": 346860,
+    "records_valid_binary_and_labeled_skill": 283105,
+    "source_unique_learners_with_skills": 4163,
+    "source_rows_repeating_student_order_key": 0
+  },
+  "mirror": {
+    "repository": "Atomi/ASSISTments2009",
+    "revision": "c72a664a9693547fb206652ed2ce18e62d320c7d",
+    "sha256": "2053b7ea63f1d5ea953834bf82ed89543e1f11bae1e3e7535c2f9d7f49d4dda7",
+    "serialized_learners": 4148,
+    "total_interactions": 274331
+  },
+  "comparison": {
+    "shared_learner_ids": 4148,
+    "official_only_learner_ids": 15,
+    "mirror_only_learner_ids": 0,
+    "shared_learner_ids_same_number_of_interactions": 3331,
+    "shared_learner_ids_identical_skill_response_multisets": 3331,
+    "shared_learner_ids_identical_native_CSV_order": 1441,
+    "shared_learner_ids_identical_numeric_order_id_order": 3331,
+    "mirror_interactions_shared_learners": 274331,
+    "corrected_interactions_shared_learners": 283014
+  },
+  "parity_status": "exact_full_dataset_parity_disproved_by_necessary_conditions",
+  "interpretation": "Necessary count and (skill, correctness) multiset conditions only; no mirror original event IDs, no independent chronology guarantee. Equal aggregates cannot prove row identity; unequal totals/multisets disprove exact full parity.",
+  "privacy": "No learner IDs, rows, or raw source bytes are written to output."
+}

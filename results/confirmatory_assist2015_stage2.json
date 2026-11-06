@@ -1,0 +1,76 @@
+{
+  "status": "passed_all_computational_gates",
+  "directional_replication_confirmed": true,
+  "test_supports_direction": true,
+  "stage1_result_used_for_model_selection": false,
+  "data": {
+    "source_url": "https://sites.google.com/site/assistmentsdata/datasets/2015-assistments-skill-builder-data",
+    "drive_id": "0B_hO8cnpcIMgUGZzRnh3bHJrSjQ",
+    "sha256": "75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0",
+    "total_source_rows": 708631,
+    "excluded_invalid_rows": 24830,
+    "eligible_learners": 19840,
+    "stage1_excluded_learners": 5000,
+    "stage2_sampling_pool": 14840,
+    "stage2_sampled_learners": 5000,
+    "stage2_sample_interactions": 172614,
+    "stage2_intersection_stage1": 0,
+    "sorting": "log_id ascending per learner, sequence_id as skill-builder concept"
+  },
+  "protocol": {
+    "stage1_sample_seed": 20261022,
+    "stage2_sample_seed": 20261023,
+    "sampled_learners": 5000,
+    "train_learners": 3500,
+    "validation_learners": 750,
+    "test_learners": 750,
+    "gru_seed": 42,
+    "gru_max_epochs": 25,
+    "gru_patience": 4,
+    "pfa_solver": "lbfgs",
+    "pfa_C": 1.0,
+    "pfa_max_iter": 2000,
+    "pfa_tol": 1e-08,
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 20261023,
+    "primary_estimand": "GRU minus PFA pooled interaction-weighted Brier",
+    "success": "upper endpoint of 95% learner-cluster percentile interval <0; diagnostic gates pass"
+  },
+  "test_metrics": {
+    "enriched_pfa": {
+      "n": 26697,
+      "positive_rate": 0.71697194441323,
+      "brier": 0.186954270145136,
+      "log_loss": 0.5566794636119368,
+      "average_precision": 0.8306718333720006,
+      "ece_10": 0.0169429951113543,
+      "roc_auc": 0.68128602293271
+    },
+    "extended_gru": {
+      "n": 26697,
+      "positive_rate": 0.71697194441323,
+      "brier": 0.18227301560902529,
+      "log_loss": 0.5434550333145024,
+      "average_precision": 0.8477370017121166,
+      "ece_10": 0.00819962269299951,
+      "roc_auc": 0.6996825804347548
+    }
+  },
+  "paired_brier": {
+    "difference_candidate_minus_reference": -0.004681254536110695,
+    "bootstrap_95_interval": [
+      -0.0060729744844493895,
+      -0.0033456516490331786
+    ],
+    "resampling_unit": "learner",
+    "estimand_unit": "interaction",
+    "n_learners": 750,
+    "n_interactions": 26697,
+    "n_bootstrap": 2000
+  },
+  "pfa_iterations": 484,
+  "pfa_convergence_warnings": [],
+  "gru_best_validation_epoch": 7,
+  "gru_epochs_completed": 11,
+  "limitation": "Replication of the directional performance difference on a newly sampled 2015 population; not causal architecture identification or universal transportability."
+}

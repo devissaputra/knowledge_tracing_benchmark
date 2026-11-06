@@ -1,0 +1,291 @@
+{
+  "status": "passed_all_computational_gates",
+  "source": {
+    "source_sha256": "75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0",
+    "eligible_learners": 19840,
+    "stage1_excluded": 5000,
+    "stage2_excluded": 5000,
+    "eligible_unused_pool": 9840,
+    "stage3_learners": 4000,
+    "stage3_interactions": 138129,
+    "learner_set_sha256": "0d9bef7d4d9d9ce4064eb63a04e7bba488ae72cd919bd7730bccd9bdecbb19f1",
+    "cohort_overlap_previous": 0,
+    "invalid_source_rows_excluded": 24830
+  },
+  "design": {
+    "predeclared_protocol": "METHODOLOGICAL_2026_PROTOCOL.md",
+    "stage3_sampling_seed": 20261026,
+    "learner_partition_seed": 20261026,
+    "train_learners": 2800,
+    "validation_learners": 600,
+    "test_learners": 600,
+    "history_budgets": [
+      1,
+      20
+    ],
+    "model_types": [
+      "window_count",
+      "ordered_logistic",
+      "window_gru"
+    ],
+    "GRU_seed": 42,
+    "bootstrap_replicates": 2000,
+    "same_targets": "Every model at every K predicts responses t >= 1 for identical 600 test learners.",
+    "selection": "Fixed before new cohort test; prior research decisions were informed by other 2009/2015 data.",
+    "inference": "Descriptive exploratory bootstrap contrasts, not multiplicity-corrected confirmatory tests."
+  },
+  "comparisons": {
+    "1": {
+      "models": {
+        "window_count": {
+          "n": 20592,
+          "positive_rate": 0.7369366744366744,
+          "brier": 0.17788199203683247,
+          "log_loss": 0.5345889370393874,
+          "average_precision": 0.8482492230416429,
+          "ece_10": 0.009320407240567558,
+          "roc_auc": 0.6844395899296832
+        },
+        "ordered_logistic": {
+          "n": 20592,
+          "positive_rate": 0.7369366744366744,
+          "brier": 0.1778819783584268,
+          "log_loss": 0.5345889271360941,
+          "average_precision": 0.8482469144579249,
+          "ece_10": 0.009320949287155366,
+          "roc_auc": 0.6844363662020748
+        },
+        "window_gru": {
+          "n": 20592,
+          "positive_rate": 0.7369366744366744,
+          "brier": 0.18000310877303297,
+          "log_loss": 0.5406576923145966,
+          "average_precision": 0.838027003779582,
+          "ece_10": 0.005780779843442258,
+          "roc_auc": 0.6709091368043554
+        }
+      },
+      "paired_GRU_minus": {
+        "window_count": {
+          "difference_candidate_minus_reference": 0.0021211167362004853,
+          "bootstrap_95_interval": [
+            0.0011984039269019259,
+            0.003013353764954072
+          ],
+          "resampling_unit": "learner",
+          "estimand_unit": "interaction",
+          "n_learners": 582,
+          "n_interactions": 20592,
+          "n_bootstrap": 2000
+        },
+        "ordered_logistic": {
+          "difference_candidate_minus_reference": 0.002121130414606117,
+          "bootstrap_95_interval": [
+            0.0011983198118476887,
+            0.003013421140517525
+          ],
+          "resampling_unit": "learner",
+          "estimand_unit": "interaction",
+          "n_learners": 582,
+          "n_interactions": 20592,
+          "n_bootstrap": 2000
+        }
+      },
+      "diagnostics": {
+        "window_count": {
+          "iterations": 295,
+          "warnings": []
+        },
+        "ordered_logistic": {
+          "iterations": 367,
+          "warnings": []
+        },
+        "window_gru": {
+          "best_epoch": 6,
+          "epochs_completed": 9,
+          "history": [
+            {
+              "epoch": 1,
+              "train_bce": 0.5700001594834665,
+              "validation_bce": 0.5546365849513333
+            },
+            {
+              "epoch": 2,
+              "train_bce": 0.5496423426455948,
+              "validation_bce": 0.5503481250851094
+            },
+            {
+              "epoch": 3,
+              "train_bce": 0.545433577422607,
+              "validation_bce": 0.5471623890125249
+            },
+            {
+              "epoch": 4,
+              "train_bce": 0.5431627397913593,
+              "validation_bce": 0.5474760850748747
+            },
+            {
+              "epoch": 5,
+              "train_bce": 0.5419399417416683,
+              "validation_bce": 0.5466526810471217
+            },
+            {
+              "epoch": 6,
+              "train_bce": 0.5412652839078146,
+              "validation_bce": 0.5449585088872168
+            },
+            {
+              "epoch": 7,
+              "train_bce": 0.5408221157525078,
+              "validation_bce": 0.5450970664384037
+            },
+            {
+              "epoch": 8,
+              "train_bce": 0.5403140336999217,
+              "validation_bce": 0.545603285447066
+            },
+            {
+              "epoch": 9,
+              "train_bce": 0.5400628717056964,
+              "validation_bce": 0.5456161411414004
+            }
+          ],
+          "train_targets": 93426,
+          "validation_targets": 20111,
+          "test_targets": 20592
+        }
+      },
+      "elapsed_seconds": 14.7
+    },
+    "20": {
+      "models": {
+        "window_count": {
+          "n": 20592,
+          "positive_rate": 0.7369366744366744,
+          "brier": 0.17667353711786812,
+          "log_loss": 0.5315903261834504,
+          "average_precision": 0.8522443340072219,
+          "ece_10": 0.006126123934703186,
+          "roc_auc": 0.6910582372474963
+        },
+        "ordered_logistic": {
+          "n": 20592,
+          "positive_rate": 0.7369366744366744,
+          "brier": 0.17388534919067833,
+          "log_loss": 0.5240946395813895,
+          "average_precision": 0.8610186198519205,
+          "ece_10": 0.0072511782088527195,
+          "roc_auc": 0.7050441361763368
+        },
+        "window_gru": {
+          "n": 20592,
+          "positive_rate": 0.7369366744366744,
+          "brier": 0.17514020613173276,
+          "log_loss": 0.5271526751223963,
+          "average_precision": 0.8589845012762509,
+          "ece_10": 0.011658007349593165,
+          "roc_auc": 0.6993609963629661
+        }
+      },
+      "paired_GRU_minus": {
+        "window_count": {
+          "difference_candidate_minus_reference": -0.0015333309861353841,
+          "bootstrap_95_interval": [
+            -0.0027605673893992813,
+            -0.0002792867452439877
+          ],
+          "resampling_unit": "learner",
+          "estimand_unit": "interaction",
+          "n_learners": 582,
+          "n_interactions": 20592,
+          "n_bootstrap": 2000
+        },
+        "ordered_logistic": {
+          "difference_candidate_minus_reference": 0.0012548569410544136,
+          "bootstrap_95_interval": [
+            7.536414859135726e-05,
+            0.002425946875021449
+          ],
+          "resampling_unit": "learner",
+          "estimand_unit": "interaction",
+          "n_learners": 582,
+          "n_interactions": 20592,
+          "n_bootstrap": 2000
+        }
+      },
+      "diagnostics": {
+        "window_count": {
+          "iterations": 299,
+          "warnings": []
+        },
+        "ordered_logistic": {
+          "iterations": 334,
+          "warnings": []
+        },
+        "window_gru": {
+          "best_epoch": 6,
+          "epochs_completed": 9,
+          "history": [
+            {
+              "epoch": 1,
+              "train_bce": 0.562216157968126,
+              "validation_bce": 0.5460942462327485
+            },
+            {
+              "epoch": 2,
+              "train_bce": 0.5360034013242106,
+              "validation_bce": 0.53683507956098
+            },
+            {
+              "epoch": 3,
+              "train_bce": 0.5258215163299819,
+              "validation_bce": 0.5301942893069468
+            },
+            {
+              "epoch": 4,
+              "train_bce": 0.5190114440188723,
+              "validation_bce": 0.5288743185004735
+            },
+            {
+              "epoch": 5,
+              "train_bce": 0.5149992852793813,
+              "validation_bce": 0.5286781249708553
+            },
+            {
+              "epoch": 6,
+              "train_bce": 0.5117375197071786,
+              "validation_bce": 0.5277301228198755
+            },
+            {
+              "epoch": 7,
+              "train_bce": 0.5087343534964336,
+              "validation_bce": 0.5304507112539802
+            },
+            {
+              "epoch": 8,
+              "train_bce": 0.5056064738932391,
+              "validation_bce": 0.5304346994831836
+            },
+            {
+              "epoch": 9,
+              "train_bce": 0.5025589439044289,
+              "validation_bce": 0.5334981878134205
+            }
+          ],
+          "train_targets": 93426,
+          "validation_targets": 20111,
+          "test_targets": 20592
+        }
+      },
+      "elapsed_seconds": 36.92
+    }
+  },
+  "within_model_brier_k20_minus_k1": {
+    "window_count": -0.0012084549189643468,
+    "ordered_logistic": -0.003996629167748483,
+    "window_gru": -0.00486290264130021
+  },
+  "gru_minus_ordered_gap_k20_minus_k1": -0.0008662734735517034,
+  "diagnostic_failures": [],
+  "interpretation": "Same target set and same last-K learner response information; representations/capacities still unequal. Single stage-3 sample after prior research; no familywise or causal claim."
+}

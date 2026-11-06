@@ -1,0 +1,55 @@
+name: "Exploratory corrected-source 2009 GRU versus enriched PFA"
+on:
+  push:
+    branches:
+      - research/kt-fresh-cohort-20261022
+    paths:
+      - scripts/corrected_2009_reanalysis.py
+      - .github/workflows/corrected-2009-reanalysis.yml
+      - CORRECTED_2009_REANALYSIS_PROTOCOL.md
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reanalysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen numeric and raw-source packages
+        run: |
+          python -m pip install -r requirements-repro.txt
+          python -m pip install 'gdown>=5.2,<6'
+      - name: Inspect Python code
+        run: python -m py_compile scripts/audit_corrected_2009.py scripts/corrected_2009_reanalysis.py
+      - name: Analyze corrected official-source data without redistributing student records
+        run: PYTHONPATH=src python scripts/corrected_2009_reanalysis.py
+      - name: Check required source-audit provenance and output schema
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('results/corrected_2009_sensitivity.json'))
+          assert r['status'] in ('completed_exploratory_corrected_source','inconclusive_diagnostics','blocked_or_failed')
+          if r['status']=='completed_exploratory_corrected_source':
+            assert r['source']['corrected_sha256']=='162ef8d2d28bcbfea6591a282994062bd8d5eaa00636544292a0d268dca6e5da'
+            assert r['paired_brier']['n_bootstrap']==2000
+          print('Corrected-source research status:',r['status'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: corrected-2009-aggregate-sensitivity
+          path: results/corrected_2009_sensitivity.json
+      - name: Archive aggregate outcome in research branch
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/corrected_2009_sensitivity.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: record exploratory corrected-2009 source sensitivity'
+            git push origin HEAD:research/kt-fresh-cohort-20261022
+          fi
