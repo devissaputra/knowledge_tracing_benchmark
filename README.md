@@ -1,4 +1,36 @@
-# Knowledge Tracing Benchmark on ASSISTments 2009
+# When Knowledge-Tracing Rankings Depend on Available History (2026)
+
+**Current working paper:** *A Source-Correction and Matched-Information Audit on ASSISTments 2009–2015*, Devis Wawan Saputra (2026). This is an author-reviewed working manuscript, **not a peer-reviewed publication**. The repository also preserves the earlier ASSISTments 2009 benchmark documented below.
+
+## Current paper: question, evidence and replication
+
+The paper asks how model rankings change when the source version is corrected and models receive the same maximum number of prior learner events. In a 2009 source-provenance comparison, 817 of 4,148 shared learners had different normalized ordered skill-response sequences between the corrected official release and a pinned third-party mirror. This demonstrates non-equivalence; it does not identify every altered original event.
+
+A separate, nonoverlapping ASSISTments 2015 stage-3 cohort contained 4,000 sampled learners (2,800 train, 600 validation, 600 test). Of the test learners, 582 had evaluable post-first-response targets: **20,592 identical test responses** across all six model/window combinations. For 20 available prior events, Brier scores were **0.176674** (count-based logistic regression), **0.173885** (order-aware logistic regression), and **0.175140** (GRU). The GRU-minus-order-aware contrast was +0.001255, with learner-cluster bootstrap 95% interval [0.000075, 0.002426]. Lower Brier is better. Model rankings depend on comparator and history representation; this does not establish a pure architectural or causal effect.
+
+### Start here for this 2026 study
+
+- [Full methodological manuscript (LaTeX)](paper/main_methodological_2026.tex)
+- [Frozen 2015 matched-history protocol](METHODOLOGICAL_2026_PROTOCOL.md)
+- [2015 matched-history experiment script](scripts/matched_history_budget_2026.py)
+- [Executed results (JSON)](results/matched_history_budget_2026.json)
+- [2009 corrected-source audit script](scripts/audit_corrected_2009.py) and [results](results/official_2009_mirror_parity_audit.json)
+- [Executed research summary](paper/METHODOLOGICAL_2026_EXECUTED_RESULTS.md)
+- [Figure-generation script](paper/generate_figures.py) and [document/numeric QA record](paper/METHODOLOGICAL_2026_FINAL_QA.json)
+- [Successful matched-history GitHub Actions run](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/40310733288)
+
+For the pinned computational environment, install `requirements-repro.txt` and `gdown>=5.2,<6`, then run from the repository root:
+
+```bash
+PYTHONPATH=src python scripts/audit_corrected_2009.py
+PYTHONPATH=src python scripts/matched_history_budget_2026.py
+```
+
+These scripts retrieve their declared public sources and write aggregate evidence; they are not claimed to have been independently rerun in this README update. Raw student-level datasets are not committed. Interpretation is limited to the evaluated historical cohorts, protocol, models, and source-processing choices.
+
+---
+
+## Earlier ASSISTments 2009 benchmark (preserved)
 
 This study asks how much predictive value different forms of learner history add when the evaluation is kept genuinely learner-disjoint. It uses 4,148 ASSISTments 2009 learners and 274,331 interactions, splitting learners rather than individual attempts into 70% training, 15% validation, and 15% final test partitions. Under one frozen protocol, it compares a global prior, a skill prior, fixed and validation-tuned Bayesian Knowledge Tracing, a PFA-style logistic model based on prior learner-skill successes and failures, and a compact GRU sequence model. Every stateful prediction is generated before the response being predicted is observed, preventing the current answer from leaking into the model state.
 
@@ -15,7 +47,7 @@ On 623 held-out learners, the seed-42 GRU achieves ROC-AUC 0.7470 and Brier scor
 
 ![Defined calculation and source-linked evidence](assets/review_calculations.svg)
 
-**Review scope:** The existing suite requires unavailable dependencies; no full-suite pass is claimed. The complete data/model experiment was not rerun in this review. Stored empirical results were inspected, not independently reproduced from raw data.
+**Scope of the earlier benchmark review:** That review inspected stored empirical results without independently rerunning the complete original experiment. The subsequent 2026 source-correction and matched-history evidence is documented separately above.
 
 ## Detailed project documentation
 
