@@ -1,6 +1,6 @@
 # When Knowledge-Tracing Rankings Depend on Available History (2026)
 
-**Current working paper:** *A Source-Correction and Matched-Information Audit on ASSISTments 2009–2015*, Devis Wawan Saputra (2026). This is an author-reviewed working manuscript, **not a peer-reviewed publication**. The repository also preserves the earlier ASSISTments 2009 benchmark documented below.
+**Current working paper:** *A Source-Correction and Matched-Information Audit on ASSISTments 2009–2015*, Devis Wawan Saputra (2026). This is a working manuscript for final author review, **not a peer-reviewed publication**. The repository also preserves the earlier ASSISTments 2009 benchmark documented below.
 
 ## Current paper: question, evidence and replication
 
