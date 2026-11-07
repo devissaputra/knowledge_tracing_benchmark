@@ -62,3 +62,5 @@ jobs:
       # Aggregate outputs are preserved in the GitHub Actions artifact above.
       # Do not commit/push from the worker: a concurrent branch update
       # previously caused a non-fast-forward error after successful numerical checks.
+
+# 2026-11-07: verification trigger after eliminating conflicting auto-push
