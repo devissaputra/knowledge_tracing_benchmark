@@ -66,3 +66,23 @@ bars([('Enriched PFA (converged)',ms['enriched_pfa']),('Extended GRU',ms['extend
      'brier','Fresh ASSISTments 2015: 750 learners; 26,697 held-out responses',
      'cohort2015_brier.png',ylim=(0,.23))
 print('Generated four manuscript figures from executed JSON.')
+
+# 2026 matched-history-budget figure, recomputed from executed aggregate evidence.
+budget=read("results/matched_history_budget_2026.json")
+assert budget["status"]=="passed_all_computational_gates"
+assert budget["source"]["cohort_overlap_previous"]==0
+fig,ax=plt.subplots(figsize=(7.25,3.35))
+for name,label in [("window_count","Window-count PFA+"),("ordered_logistic","Order-aware logistic"),("window_gru","Window-GRU")]:
+    y=[budget["comparisons"][str(k)]["models"][name]["brier"] for k in (1,20)]
+    ax.plot([1,20],y,marker="o",linewidth=1.8,markersize=6,label=label)
+    for k,v in zip((1,20),y):
+        ax.annotate(f"{v:.4f}",(k,v),xytext=(3,7 if name!="window_count" else -14),textcoords="offset points",fontsize=7)
+ax.set_xticks([1,20],["1 prior event","20 prior events"])
+ax.set_ylabel("Interaction-pooled test Brier score (lower better)")
+ax.set_xlabel("Information budget per next-response prediction")
+ax.grid(axis="y",alpha=.27)
+ax.legend(loc="upper right",fontsize=8,frameon=False)
+fig.tight_layout()
+fig.savefig(OUT/"history_budget_brier.png",dpi=190)
+plt.close(fig)
+print("Generated new 2026 matched-budget figure.")

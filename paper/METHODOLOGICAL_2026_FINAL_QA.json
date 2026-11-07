@@ -1,0 +1,181 @@
+{
+  "date": "2026-10-26",
+  "scope": "Internal computation/transcription/document QA, not outside peer review",
+  "checks_total": 41,
+  "passed": 41,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Official 2015 CSV SHA-256 confirmed",
+      "passed": true
+    },
+    {
+      "name": "Fresh cohort has no overlap with first/second sample",
+      "passed": true
+    },
+    {
+      "name": "Correct stage3 learner splits",
+      "passed": true
+    },
+    {
+      "name": "Result scientifically completed",
+      "passed": true
+    },
+    {
+      "name": "Both history budgets present",
+      "passed": true
+    },
+    {
+      "name": "Same 20592 targets across both budgets",
+      "passed": true
+    },
+    {
+      "name": "582 evaluable history-eligible test learners",
+      "passed": true
+    },
+    {
+      "name": "2k learner cluster resamples",
+      "passed": true
+    },
+    {
+      "name": "No logistic convergence warnings",
+      "passed": true
+    },
+    {
+      "name": "All six models report bounded metrics",
+      "passed": true
+    },
+    {
+      "name": "Manuscript Brier 1 window_count",
+      "passed": true
+    },
+    {
+      "name": "Manuscript AUC 1 window_count",
+      "passed": true
+    },
+    {
+      "name": "Manuscript Brier 1 ordered_logistic",
+      "passed": true
+    },
+    {
+      "name": "Manuscript AUC 1 ordered_logistic",
+      "passed": true
+    },
+    {
+      "name": "Manuscript Brier 1 window_gru",
+      "passed": true
+    },
+    {
+      "name": "Manuscript AUC 1 window_gru",
+      "passed": true
+    },
+    {
+      "name": "Positive GRU-minus-ordered contrast for K=1",
+      "passed": true
+    },
+    {
+      "name": "Paired interval excludes zero positive at K=1",
+      "passed": true
+    },
+    {
+      "name": "Manuscript Brier 20 window_count",
+      "passed": true
+    },
+    {
+      "name": "Manuscript AUC 20 window_count",
+      "passed": true
+    },
+    {
+      "name": "Manuscript Brier 20 ordered_logistic",
+      "passed": true
+    },
+    {
+      "name": "Manuscript AUC 20 ordered_logistic",
+      "passed": true
+    },
+    {
+      "name": "Manuscript Brier 20 window_gru",
+      "passed": true
+    },
+    {
+      "name": "Manuscript AUC 20 window_gru",
+      "passed": true
+    },
+    {
+      "name": "Positive GRU-minus-ordered contrast for K=20",
+      "passed": true
+    },
+    {
+      "name": "Paired interval excludes zero positive at K=20",
+      "passed": true
+    },
+    {
+      "name": "New figure exists",
+      "passed": true
+    },
+    {
+      "name": "Multiple comparison caveat",
+      "passed": true
+    },
+    {
+      "name": "Late arxiv file includes AI-assistance caveat",
+      "passed": true
+    },
+    {
+      "name": "No novel architect invention claim",
+      "passed": true
+    },
+    {
+      "name": "Inherited figure kt_auc.png present",
+      "passed": true
+    },
+    {
+      "name": "Inherited figure kt_brier.png present",
+      "passed": true
+    },
+    {
+      "name": "Inherited figure robust_comparison.png present",
+      "passed": true
+    },
+    {
+      "name": "arXiv archive ZIP integrity",
+      "passed": true
+    },
+    {
+      "name": "Clean-room pdflatex pass 1",
+      "passed": true
+    },
+    {
+      "name": "Clean-room pdflatex pass 2",
+      "passed": true
+    },
+    {
+      "name": "Final PDF contains 20,592 evaluation count",
+      "passed": true
+    },
+    {
+      "name": "Final PDF contains new method section",
+      "passed": true
+    },
+    {
+      "name": "No LaTeX overfull warning",
+      "passed": true
+    },
+    {
+      "name": "No unresolved citations",
+      "passed": true
+    },
+    {
+      "name": "Final manuscript PDF hash matches clean-room compiled PDF",
+      "passed": true
+    }
+  ],
+  "source_sha256": "75e1f46131d5897a388c82411bc3032279899cb1f1e66a9043354d41234407a0",
+  "stage3_results_sha256": "e9a8cba68c2cb5b945d3a286aa27c0bfdc24b8841cd5052badc5ea4ac2e7381d",
+  "arxiv_source_sha256": "6d15e720f8bb613e40d9f4c1e6e4f9118d162092125dc749122f92cc2edcb6ff",
+  "pdf_sha256": "b0783067f84ac3c5b1f6b478f673e59465d6ecc2655833a0443831af4546609a",
+  "author_approval": false,
+  "external_peer_review": false,
+  "modern_independent_source_validation": false,
+  "scientific_caveat": "Single stage-3 split and GRU seed; matched input-stream availability does not match parameter count or optimization; descriptive bootstrap comparisons and 2009 source audit only"
+}
