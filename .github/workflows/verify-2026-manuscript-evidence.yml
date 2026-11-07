@@ -1,0 +1,28 @@
+name: Verify 2026 manuscript evidence JSON
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'results/matched_history_budget_2026.json'
+      - 'results/oulad_metrics.json'
+      - 'scripts/verify_2026_manuscript_evidence.py'
+      - '.github/workflows/verify-2026-manuscript-evidence.yml'
+  pull_request:
+    paths:
+      - 'results/matched_history_budget_2026.json'
+      - 'results/oulad_metrics.json'
+      - 'scripts/verify_2026_manuscript_evidence.py'
+      - '.github/workflows/verify-2026-manuscript-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  manuscript-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate 2026 manuscript numerical provenance
+        run: python scripts/verify_2026_manuscript_evidence.py
