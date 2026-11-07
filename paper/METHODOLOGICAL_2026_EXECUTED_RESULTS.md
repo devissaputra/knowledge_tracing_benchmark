@@ -24,14 +24,14 @@ Improvements in Brier from K=1 to K=20: count-based 0.001208, order-aware 0.0039
 - New protocol committed **before evaluating stage-3 cohort**: [frozen protocol](../METHODOLOGICAL_2026_PROTOCOL.md)
 - [Python implementation](../scripts/matched_history_budget_2026.py)
 - [Real-data, checksum-verified and learner-disjoint aggregate JSON](../results/matched_history_budget_2026.json)
-- [Successful GitHub Actions run 40310733288](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/40310733288).
+- [GitHub Actions run 40310733288](https://github.com/devissaputra/knowledge_tracing_benchmark/actions/runs/40310733288): computational and numerical checks passed, but the overall job failed at the final non-fast-forward Git push. The aggregate artifact was uploaded successfully. Independent calculations also succeeded in run 40724144930.
 - [Final 13-page author-review manuscript](main_methodological_2026.tex).
 - [41 internal manuscript and numerical QA checks](METHODOLOGICAL_2026_FINAL_QA.json).
 - [Figure generator](generate_figures.py).
 - User-facing final PDF, minimal arXiv ZIP, and complete evidence package are preserved in ChatGPT Library folder `/Paper1_Methodological_2026`.
 
 ### Transparency on prior release assertion
-The initial run 40310088864 completed all model training, both history horizons and aggregate output. Its release gate nevertheless failed on a mistaken assertion requiring 600 **evaluated** learners, confusing split members with learners having t>=1 targets. The corrected check permits 582 observed evaluable test learners and verifies exactly equal event counts across models, without changing any data, model, tuning, or observed result. The final run succeeds.
+The initial run 40310088864 completed all model training, both history horizons and aggregate output. Its release gate nevertheless failed on a mistaken assertion requiring 600 **evaluated** learners, confusing split members with learners having t>=1 targets. The corrected check permits 582 observed evaluable test learners and verifies exactly equal event counts across models, without changing any data, model, tuning, or observed result. The repaired release assertion passed its computational checks, but the subsequent attempt to push aggregate results failed due to a non-fast-forward branch conflict. This workflow infrastructure issue did not invalidate the completed numerical calculations.
 
 ### Contribution boundaries
 The study is **not** the first knowledge-tracing information-parity comparison, not the first source correction study and not a model architecture innovation. Polydoros (2026, DOI 10.5281/zenodo.22131530), Padi et al. (2026, arXiv:2609.28502), and Badran & Preisach (2026, DOI 10.1007/s42979-026-05344-3) are material prior work. The incremental contribution is a frozen, newly nonoverlapping 2015 cohort with explicitly constrained K=1 versus K=20 history budgets and order-feature comparator, interpreted alongside independently verified 2009 source mismatch.
