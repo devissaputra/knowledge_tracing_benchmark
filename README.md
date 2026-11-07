@@ -1,3 +1,5 @@
+> **Version and CI note (7 November 2026):** The later 6 November manuscript PDF is not yet established as line-by-line identical to `paper/main_methodological_2026.tex`. Workflow run 40310733288 **completed the calculations and numerical gates but failed on the final non-fast-forward Git push**. A proposed workflow fix and the verification boundaries are documented in [the evidence reconciliation note](docs/2026_manuscript_evidence_reconciliation.md). Do not characterize the entire run as a successful CI job.
+
 # When Knowledge-Tracing Rankings Depend on Available History (2026)
 
 **Current working paper:** *A Source-Correction and Matched-Information Audit on ASSISTments 2009–2015*, Devis Wawan Saputra (2026). This is a working manuscript for final author review, **not a peer-reviewed publication**. The repository also preserves the earlier ASSISTments 2009 benchmark documented below.
