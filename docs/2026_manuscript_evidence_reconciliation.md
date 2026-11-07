@@ -1,3 +1,9 @@
+## Authoritative uploaded PDF fingerprint
+
+- Supplied manuscript edition: **6 November 2026**, 10 pages.
+- PDF SHA-256: `837c561dd986989095e8fb5abe91fcdd595540a8cf8683b01d947bcc849f614d`.
+- This fingerprint identifies the uploaded reviewer-facing PDF, which is **not stored as an exact binary file in this repository**. It does not certify a matching LaTeX source or arXiv ZIP.
+
 # Manuscript and GitHub evidence reconciliation (7 November 2026)
 
 This is an audit note, not external peer review or a claim of completed end-to-end independent reproduction.
