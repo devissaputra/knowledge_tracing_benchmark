@@ -59,13 +59,6 @@ jobs:
           name: matched-history-budget-2026-aggregate
           path: results/matched_history_budget_2026.json
           if-no-files-found: warn
-      - name: Archive de-identified aggregate results
-        if: success()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/matched_history_budget_2026.json
-          if ! git diff --cached --quiet; then
-            git commit -m "research: archive matched-history budget empirical results"
-            git push origin HEAD:research/kt-methodological-2026-history-budget
-          fi
+      # Aggregate outputs are preserved in the GitHub Actions artifact above.
+      # Do not commit/push from the worker: a concurrent branch update
+      # previously caused a non-fast-forward error after successful numerical checks.
